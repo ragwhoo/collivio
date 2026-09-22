@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { Hammer, Users, TrendingUp, Sprout } from "lucide-react";
 import Avatar21 from "@/components/avatar21";
-import SideRays from "@/components/SideRays";
 
 const ORBIT_SIZES = ["40vmin", "65vmin", "95vmin", "130vmin", "170vmin"];
 const ORBIT_OPACITY = [1, 0.75, 0.5, 0.28, 0.07];
@@ -123,6 +122,12 @@ export default function Hero() {
             stagger: 0.08,
           },
           1.0
+        )
+        .fromTo(
+          ".orbit-glow",
+          { opacity: 0, scale: 0.5 },
+          { opacity: 1, scale: 1, duration: 1.4, ease: "power2.out" },
+          0.8
         );
     }, root);
 
@@ -142,22 +147,6 @@ export default function Hero() {
           priority
           className="object-cover"
           sizes="100vw"
-        />
-      </div>
-
-      <div className="absolute inset-0 z-[1]">
-        <SideRays
-          speed={2.5}
-          rayColor1="#EAB308"
-          rayColor2="#96c8ff"
-          intensity={2}
-          spread={2}
-          origin="top-right"
-          tilt={0}
-          saturation={1.5}
-          blend={0.75}
-          falloff={1.6}
-          opacity={1}
         />
       </div>
 
@@ -195,6 +184,17 @@ export default function Hero() {
         }}
       >
         <div className="orbit-system absolute inset-0 flex items-center justify-center">
+          <div
+            className="orbit-glow pointer-events-none absolute size-[45vmin] rounded-full"
+            style={{
+              background:
+                "radial-gradient(circle, rgba(255,127,155,0.7) 0%, rgba(248,154,154,0.45) 35%, rgba(215,167,255,0.2) 60%, transparent 75%)",
+              boxShadow:
+                "0 0 100px 40px rgba(255,127,155,0.45), 0 0 180px 80px rgba(215,167,255,0.25)",
+              filter: "blur(12px)",
+              opacity: 0,
+            }}
+          />
           {ORBIT_SIZES.map((size, i) => (
             <div
               key={size}

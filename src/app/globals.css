@@ -16,3 +16,11 @@ body {
   color: var(--foreground);
   font-family: var(--font-poppins), Arial, Helvetica, sans-serif;
 }
+
+html {
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+}
