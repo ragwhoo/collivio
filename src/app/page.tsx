@@ -1,11 +1,15 @@
 import Hero from "./Hero";
 import Features from "./Features";
+import FixedBackground from "./FixedBackground";
 
 export default function Home() {
   return (
-    <main>
-      <Hero />
-      <Features />
-    </main>
+    <>
+      <FixedBackground />
+      <main className="relative z-10">
+        <Hero />
+        <Features />
+      </main>
+    </>
   );
 }

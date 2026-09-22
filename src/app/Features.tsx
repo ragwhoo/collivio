@@ -74,7 +74,8 @@ export default function Features() {
   return (
     <section
       ref={rootRef}
-      className="relative flex min-h-screen flex-col justify-center bg-[#05050a] px-6 py-24 sm:px-12 md:px-20"
+      id="features"
+      className="relative flex min-h-screen flex-col justify-center px-6 py-24 sm:px-12 md:px-20"
     >
       <div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-3">
         {CARDS.map(
