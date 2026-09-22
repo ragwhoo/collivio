@@ -78,7 +78,7 @@ export default function Hero() {
       ref={rootRef}
       className="relative h-screen w-full overflow-hidden bg-[#05050a]"
     >
-      <div className="hero-bg absolute inset-0 opacity-0">
+      <div className="hero-bg absolute inset-0 z-0 opacity-0">
         <Image
           src="/nebg.png"
           alt=""
@@ -99,7 +99,7 @@ export default function Hero() {
       />
 
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 z-[1]"
         style={{ transform: "translate(75px, 20px)" }}
       >
         <div className="absolute inset-0 flex items-center justify-center">
@@ -117,7 +117,7 @@ export default function Hero() {
       </div>
 
       <div
-        className="pointer-events-none absolute inset-0"
+        className="pointer-events-none absolute inset-0 z-[5]"
         style={{
           transform: `translate(${orbitX}px, ${orbitY}px) scale(${orbitZoom})`,
         }}
@@ -139,10 +139,10 @@ export default function Hero() {
       </div>
 
       <div
-        className="pointer-events-none absolute inset-0 z-10 flex flex-col items-start justify-end px-6 pb-24 text-left sm:px-12 md:px-20"
+        className="absolute inset-0 z-10 flex flex-col items-start justify-end px-6 pb-24 text-left sm:px-12 md:px-20"
       >
         <p className="hero-eyebrow mb-4 text-xs font-medium uppercase tracking-[0.25em] text-white/60">
-          students &middot; projects &middot; experience
+          students &nbsp;&nbsp;&middot;&nbsp;&nbsp; projects &nbsp;&nbsp;&middot;&nbsp;&nbsp; experience
         </p>
         <h1
           className="hero-title font-semibold tracking-tight text-white"
@@ -158,12 +158,13 @@ export default function Hero() {
                 "linear-gradient(135deg, #FF7F9B, #F89A9A, #D7A7FF)",
               lineHeight: 1.15,
               paddingBottom: "0.1em",
+              marginTop: "-0.12em",
             }}
           >
             Together.
           </span>
         </h1>
-        <p className="hero-sub mt-8 max-w-xl text-lg font-light text-white/75 sm:text-xl">
+        <p className="hero-sub mt-3 max-w-xl text-lg font-light text-white/75 sm:text-xl">
           Join a community of students building their future, one project at a
           time.
         </p>
