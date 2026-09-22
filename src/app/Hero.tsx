@@ -3,16 +3,31 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { Hammer, Users, TrendingUp, Sprout } from "lucide-react";
 import Avatar21 from "@/components/avatar21";
+import SideRays from "@/components/SideRays";
 
 const ORBIT_SIZES = ["40vmin", "65vmin", "95vmin", "130vmin", "170vmin"];
 const ORBIT_OPACITY = [1, 0.75, 0.5, 0.28, 0.07];
 
+const ORBIT_CARDS = [
+  { label: "Build projects", icon: Hammer, orbit: 2, angle: 30 },
+  { label: "Meet people", icon: Users, orbit: 2, angle: 210 },
+  { label: "Gain experience", icon: TrendingUp, orbit: 3, angle: 155 },
+  { label: "Grow together", icon: Sprout, orbit: 2, angle: 310 },
+] as const;
+
+const ORBIT_BALLS = [
+  { orbit: 1, angle: 45, color: "#FF7F9B" },
+  { orbit: 3, angle: 200, color: "#F89A9A" },
+  { orbit: 2, angle: 340, color: "#D7A7FF" },
+] as const;
+
 export default function Hero() {
   const rootRef = useRef<HTMLDivElement>(null);
-  const [orbitX, setOrbitX] = useState(413);
-  const [orbitY, setOrbitY] = useState(0);
-  const [orbitZoom, setOrbitZoom] = useState(0.74);
+  const [orbitX] = useState(413);
+  const [orbitY] = useState(0);
+  const [orbitZoom] = useState(0.74);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -23,8 +38,8 @@ export default function Hero() {
         .timeline({ defaults: { ease: "power3.out" } })
         .fromTo(
           ".hero-globe-inner",
-          { opacity: 0, scale: 0.85 },
-          { opacity: 1, scale: 1, duration: 1.6 },
+          { opacity: 0, filter: "blur(24px)" },
+          { opacity: 1, filter: "blur(0px)", duration: 1.6 },
           0
         )
         .fromTo(
@@ -67,6 +82,47 @@ export default function Hero() {
             stagger: 0.15,
           },
           0.3
+        )
+        .fromTo(
+          ".orbit-pill",
+          { opacity: 0, scale: 0.8, rotation: (i: number) => 35 + i * 30 },
+          {
+            opacity: 1,
+            scale: 1,
+            rotation: 0,
+            duration: (i: number) => 1.3 + i * 0.35,
+            ease: "power2.out",
+            stagger: 0.08,
+          },
+          1.0
+        )
+        .fromTo(
+          ".orbit-ball",
+          { opacity: 0, scale: 0 },
+          { opacity: 1, scale: 1, duration: 0.7, stagger: 0.1 },
+          1.3
+        )
+        .fromTo(
+          ".orbit-revolve-ball",
+          { rotation: (i: number) => -40 - i * 25 },
+          {
+            rotation: 0,
+            duration: (i: number) => 1.2 + i * 0.3,
+            ease: "power2.out",
+            stagger: 0.08,
+          },
+          1.0
+        )
+        .fromTo(
+          ".orbit-revolve-pill",
+          { rotation: (i: number) => -35 - i * 30 },
+          {
+            rotation: 0,
+            duration: (i: number) => 1.3 + i * 0.35,
+            ease: "power2.out",
+            stagger: 0.08,
+          },
+          1.0
         );
     }, root);
 
@@ -89,8 +145,24 @@ export default function Hero() {
         />
       </div>
 
+      <div className="absolute inset-0 z-[1]">
+        <SideRays
+          speed={2.5}
+          rayColor1="#EAB308"
+          rayColor2="#96c8ff"
+          intensity={2}
+          spread={2}
+          origin="top-right"
+          tilt={0}
+          saturation={1.5}
+          blend={0.75}
+          falloff={1.6}
+          opacity={1}
+        />
+      </div>
+
       <div
-        className="pointer-events-none absolute inset-0 z-[1] opacity-[0.15] mix-blend-overlay"
+        className="pointer-events-none absolute inset-0 z-[2] opacity-[0.15] mix-blend-overlay"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
           backgroundRepeat: "repeat",
@@ -99,7 +171,7 @@ export default function Hero() {
       />
 
       <div
-        className="absolute inset-0 z-[1]"
+        className="absolute inset-0 z-[3]"
         style={{ transform: "translate(75px, 20px)" }}
       >
         <div className="absolute inset-0 flex items-center justify-center">
@@ -117,12 +189,12 @@ export default function Hero() {
       </div>
 
       <div
-        className="pointer-events-none absolute inset-0 z-[5]"
+        className="pointer-events-none absolute inset-0 z-[1]"
         style={{
           transform: `translate(${orbitX}px, ${orbitY}px) scale(${orbitZoom})`,
         }}
       >
-        <div className="absolute inset-0 flex items-center justify-center">
+        <div className="orbit-system absolute inset-0 flex items-center justify-center">
           {ORBIT_SIZES.map((size, i) => (
             <div
               key={size}
@@ -135,6 +207,68 @@ export default function Hero() {
               }}
             />
           ))}
+          {ORBIT_BALLS.map(({ orbit, angle, color }) => {
+            const radiusMatch = ORBIT_SIZES[orbit].match(/^(\d+(?:\.\d+)?)vmin$/);
+            const radius = radiusMatch ? parseFloat(radiusMatch[1]) / 2 : 0;
+            const rad = (angle * Math.PI) / 180;
+            const x = Math.cos(rad) * radius;
+            const y = Math.sin(rad) * radius;
+            return (
+              <div
+                key={`${orbit}-${angle}`}
+                className="orbit-revolve-ball absolute inset-0"
+              >
+                <div
+                  className="absolute"
+                  style={{
+                    left: `calc(50% + ${x}vmin)`,
+                    top: `calc(50% + ${y}vmin)`,
+                    transform: "translate(-50%, -50%)",
+                  }}
+                >
+                  <div
+                    className="orbit-ball size-3 rounded-full"
+                    style={{
+                      backgroundColor: color,
+                      boxShadow: `0 0 12px 4px ${color}, 0 0 28px 8px ${color}66`,
+                    }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+          {ORBIT_CARDS.map(({ label, icon: Icon, orbit, angle }) => {
+            const radiusMatch = ORBIT_SIZES[orbit].match(/^(\d+(?:\.\d+)?)vmin$/);
+            const radius = radiusMatch ? parseFloat(radiusMatch[1]) / 2 : 0;
+            const rad = (angle * Math.PI) / 180;
+            const x = Math.cos(rad) * radius;
+            const y = Math.sin(rad) * radius;
+            return (
+              <div
+                key={label}
+                className="orbit-revolve-pill absolute inset-0"
+              >
+                <div
+                  className="absolute"
+                  style={{
+                    left: `calc(50% + ${x}vmin)`,
+                    top: `calc(50% + ${y}vmin)`,
+                    transform: "translate(-50%, -50%)",
+                  }}
+                >
+                  <div
+                    className="orbit-pill flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 backdrop-blur-md"
+                    style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.25)" }}
+                  >
+                    <Icon className="size-4 shrink-0 text-white/90" strokeWidth={2} />
+                    <span className="whitespace-nowrap text-xs font-medium text-white sm:text-sm">
+                      {label}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -211,51 +345,6 @@ export default function Hero() {
           Get Started
         </a>
       </header>
-
-      <div className="absolute bottom-6 right-6 z-20 w-56 rounded-2xl border border-white/15 bg-black/70 p-4 backdrop-blur-md">
-        <div className="mb-3 text-xs font-medium uppercase tracking-wider text-white/50">
-          Orbits
-        </div>
-        <div className="mb-1 flex items-center justify-between text-xs text-white/50">
-          <span>X</span>
-          <span className="font-mono">{orbitX}px</span>
-        </div>
-        <input
-          type="range"
-          min={-1500}
-          max={1500}
-          step={1}
-          value={orbitX}
-          onChange={(e) => setOrbitX(parseInt(e.target.value))}
-          className="mb-3 w-full accent-white"
-        />
-        <div className="mb-1 flex items-center justify-between text-xs text-white/50">
-          <span>Y</span>
-          <span className="font-mono">{orbitY}px</span>
-        </div>
-        <input
-          type="range"
-          min={-1500}
-          max={1500}
-          step={1}
-          value={orbitY}
-          onChange={(e) => setOrbitY(parseInt(e.target.value))}
-          className="mb-3 w-full accent-white"
-        />
-        <div className="mb-1 flex items-center justify-between text-xs text-white/50">
-          <span>Zoom</span>
-          <span className="font-mono">{orbitZoom.toFixed(2)}x</span>
-        </div>
-        <input
-          type="range"
-          min={0.2}
-          max={3}
-          step={0.01}
-          value={orbitZoom}
-          onChange={(e) => setOrbitZoom(parseFloat(e.target.value))}
-          className="w-full accent-white"
-        />
-      </div>
     </div>
   );
 }
