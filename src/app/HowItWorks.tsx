@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import Image from "next/image";
+import { useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Search, Users, Hammer, Award } from "lucide-react";
@@ -54,6 +53,58 @@ const STEPS = [
     side: "right" as const,
   },
 ] as const;
+
+type PlacementKey = "discover" | "find" | "build" | "showcase";
+
+type Placement = {
+  src: string;
+  x: number;
+  y: number;
+  w: number;
+  rot: number;
+};
+
+const PLACEMENT_KEYS: PlacementKey[] = [
+  "discover",
+  "find",
+  "build",
+  "showcase",
+];
+
+const DEFAULT_PLACEMENTS: Record<PlacementKey, Placement> = {
+  discover: {
+    src: "/illustrations/discover.svg",
+    x: 88.83606432305008,
+    y: 42.33129053310744,
+    w: 80,
+    rot: 0,
+  },
+  find: {
+    src: "/illustrations/find-collaborators.svg",
+    x: 11.000002384185791,
+    y: 48.773009293663186,
+    w: 80,
+    rot: 0,
+  },
+  build: {
+    src: "/illustrations/build-together.svg",
+    x: 91.34374761581421,
+    y: 44.58077804531798,
+    w: 80,
+    rot: 0,
+  },
+  showcase: {
+    src: "/illustrations/showcase.svg",
+    x: 11.390621423721313,
+    y: 44.88752962241051,
+    w: 80,
+    rot: 0,
+  },
+};
+
+function clamp(n: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, n));
+}
 
 function splitChars(text: string) {
   return text.split("").map((ch, i) => {
@@ -168,12 +219,24 @@ function setHowWipe(p: number) {
   }
 }
 
+type StepEditProps = {
+  placementKey: PlacementKey;
+  placement: Placement;
+  editMode: boolean;
+  selected: boolean;
+  onSelect: (key: PlacementKey) => void;
+  onDrag: (key: PlacementKey, e: React.PointerEvent) => void;
+  onResize: (key: PlacementKey, e: React.PointerEvent) => void;
+};
+
 function renderStep(
   step: (typeof STEPS)[number],
   index: number,
-  isFirst: boolean
+  isFirst: boolean,
+  edit?: StepEditProps
 ) {
   const { title, body, details, icon: Icon, side } = step;
+  const illu = edit?.placement;
   return (
     <div
       key={title}
@@ -190,9 +253,17 @@ function renderStep(
       </div>
 
       <div
-        className={`timeline-card relative z-10 w-full rounded-[20px] border border-black/10 bg-white p-7 shadow-[0_20px_50px_rgba(0,0,0,0.06)] sm:w-[calc(50%-3rem)] ${
-          side === "left" ? "mr-auto sm:pr-4" : "ml-auto sm:pl-4"
+        className={`timeline-card relative z-10 w-full rounded-[20px] border border-white/60 bg-white/40 p-9 pl-12 pr-14 text-black shadow-[0_20px_50px_rgba(0,0,0,0.06)] backdrop-blur-xl sm:absolute sm:top-0 sm:bottom-0 sm:my-auto sm:h-fit sm:w-[calc(25vw+80px)] ${
+          side === "left"
+            ? "sm:left-[calc(50%-25vw-200px)] sm:right-auto sm:pr-4"
+            : "sm:right-[calc(50%-25vw-200px)] sm:left-auto sm:pl-4"
         }`}
+        style={{
+          background:
+            "linear-gradient(135deg, rgba(255,255,255,0.55), rgba(255,255,255,0.25))",
+          boxShadow:
+            "0 20px 50px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.75)",
+        }}
       >
         <div
           className={`mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-black/50 ${
@@ -220,25 +291,166 @@ function renderStep(
             </li>
           ))}
         </ul>
-
-        {index === STEPS.length - 1 && (
-          <div className="mt-6 overflow-hidden rounded-xl border border-black/10">
-            <Image
-              src="/Hero2.png"
-              alt="Collivio product"
-              width={640}
-              height={360}
-              className="h-auto w-full object-cover"
-            />
-          </div>
-        )}
       </div>
+
+      {illu && (
+        <div
+          className="timeline-illu absolute z-[5]"
+          style={{
+            left: `${illu.x}%`,
+            top: `${illu.y}%`,
+            width: `${illu.w}%`,
+            transform: `translate(-50%, -50%) rotate(${illu.rot}deg)`,
+            pointerEvents: edit?.editMode ? "auto" : "none",
+            cursor: edit?.editMode ? "move" : undefined,
+            touchAction: "none",
+            outline:
+              edit?.editMode && edit.selected
+                ? "2px dashed #FF7F9B"
+                : edit?.editMode
+                  ? "1px dashed rgba(0,0,0,0.25)"
+                  : undefined,
+            outlineOffset: 4,
+          }}
+          onPointerDown={(e) => {
+            if (!edit?.editMode) return;
+            e.preventDefault();
+            e.stopPropagation();
+            edit.onSelect(edit.placementKey);
+            edit.onDrag(edit.placementKey, e);
+          }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={illu.src}
+            alt=""
+            className="h-auto w-full select-none"
+            draggable={false}
+          />
+          {edit?.editMode && (
+            <div
+              className="absolute -right-2.5 -bottom-2.5 size-5 rounded-full border-2 border-white bg-[#FF7F9B] shadow"
+              style={{ cursor: "nwse-resize" }}
+              onPointerDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                edit.onSelect(edit.placementKey);
+                edit.onResize(edit.placementKey, e);
+              }}
+            />
+          )}
+        </div>
+      )}
     </div>
   );
 }
 
 export default function HowItWorks() {
   const rootRef = useRef<HTMLElement>(null);
+  const [editMode, setEditMode] = useState(false);
+  const [placements, setPlacements] =
+    useState<Record<PlacementKey, Placement>>(DEFAULT_PLACEMENTS);
+  const [selected, setSelected] = useState<PlacementKey>("discover");
+  const [copied, setCopied] = useState(false);
+  const placementsRef = useRef(placements);
+  placementsRef.current = placements;
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (
+        target &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+      if (e.key === "5" && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        e.preventDefault();
+        setEditMode((m) => !m);
+        setCopied(false);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  const onDrag = useCallback((key: PlacementKey, e: React.PointerEvent) => {
+    const step = (e.currentTarget as HTMLElement).closest(
+      ".timeline-step"
+    ) as HTMLElement | null;
+    if (!step) return;
+    const rect = step.getBoundingClientRect();
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const orig = { ...placementsRef.current[key] };
+
+    const move = (ev: PointerEvent) => {
+      const dx = ((ev.clientX - startX) / rect.width) * 100;
+      const dy = ((ev.clientY - startY) / rect.height) * 100;
+      setPlacements((p) => ({
+        ...p,
+        [key]: {
+          ...p[key],
+          x: clamp(orig.x + dx, 0, 100),
+          y: clamp(orig.y + dy, 0, 100),
+        },
+      }));
+    };
+    const up = () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+    };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+  }, []);
+
+  const onResize = useCallback((key: PlacementKey, e: React.PointerEvent) => {
+    const step = (e.currentTarget as HTMLElement).closest(
+      ".timeline-step"
+    ) as HTMLElement | null;
+    if (!step) return;
+    const rect = step.getBoundingClientRect();
+    const startX = e.clientX;
+    const origW = placementsRef.current[key].w;
+
+    const move = (ev: PointerEvent) => {
+      const dw = ((ev.clientX - startX) / rect.width) * 100;
+      setPlacements((p) => ({
+        ...p,
+        [key]: { ...p[key], w: clamp(origW + dw, 5, 80) },
+      }));
+    };
+    const up = () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+    };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+  }, []);
+
+  const copyJson = async () => {
+    try {
+      await navigator.clipboard.writeText(
+        JSON.stringify(placements, null, 2)
+      );
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      setCopied(false);
+    }
+  };
+
+  const stepEdit = (i: number): StepEditProps => ({
+    placementKey: PLACEMENT_KEYS[i],
+    placement: placements[PLACEMENT_KEYS[i]],
+    editMode,
+    selected: selected === PLACEMENT_KEYS[i],
+    onSelect: setSelected,
+    onDrag,
+    onResize,
+  });
 
   useEffect(() => {
     const root = rootRef.current;
@@ -292,6 +504,7 @@ export default function HowItWorks() {
       gsap.set(".timeline-leaf-progress", { scaleY: 0, scaleX: 1, width: 6 });
       gsap.set(".timeline-start", { autoAlpha: 0, scale: 0.4 });
       gsap.set(".timeline-axis", { opacity: 0 });
+      gsap.set(".timeline-illu", { opacity: 0 });
 
       const applyContinuum = () => {
         const leaf = root.querySelector<HTMLElement>(".timeline-leaf");
@@ -362,25 +575,21 @@ export default function HowItWorks() {
             const dot = step.querySelector(".timeline-dot") as HTMLElement;
             const title = step.querySelector(".milestone-title") as HTMLElement;
             const body = step.querySelector(".milestone-body") as HTMLElement;
+            const illu = step.querySelector(".timeline-illu") as HTMLElement | null;
             const isLeft = step.dataset.side === "left";
             const dir = isLeft ? -56 : 56;
 
             gsap.set(step, { autoAlpha: 1 });
 
-            const enter = Math.min(
-              Math.max((p - cardIn) / 0.35, 0),
-              1
-            );
+            const enter = Math.min(Math.max((p - cardIn) / 0.35, 0), 1);
             const enterE = 1 - Math.pow(1 - enter, 3);
 
             gsap.set(card, { opacity: enterE, x: dir * (1 - enterE) });
             gsap.set(dot, { scale: Math.max(enterE * lineP, 0.001) });
+            if (illu) gsap.set(illu, { opacity: enterE });
 
-            revealChars(title, Math.min(Math.max((p - cardIn) / 0.45, 0), 1));
-            revealChars(
-              body,
-              Math.min(Math.max((p - cardIn - 0.08) / 0.4, 0), 1)
-            );
+            revealChars(title, enterE);
+            revealChars(body, enterE);
           });
 
           gsap.set(".timeline-axis", {
@@ -429,6 +638,7 @@ export default function HowItWorks() {
         const dot = step.querySelector(".timeline-dot") as HTMLElement;
         const title = step.querySelector(".milestone-title") as HTMLElement;
         const body = step.querySelector(".milestone-body") as HTMLElement;
+        const illu = step.querySelector(".timeline-illu") as HTMLElement | null;
         const isLeft = step.dataset.side === "left";
         const dir = isLeft ? -56 : 56;
         const isLast = stepIndex === leafSteps.length - 1;
@@ -445,8 +655,9 @@ export default function HowItWorks() {
 
               gsap.set(card, { opacity: enterE, x: dir * (1 - enterE) });
               gsap.set(dot, { scale: Math.max(enterE, 0.001) });
-              revealChars(title, enter);
-              revealChars(body, Math.min(enter * 1.2, 1));
+              if (illu) gsap.set(illu, { opacity: enterE });
+              revealChars(title, enterE);
+              revealChars(body, enterE);
               return;
             }
 
@@ -455,24 +666,24 @@ export default function HowItWorks() {
             const exit =
               self.progress > 0.55 ? (self.progress - 0.55) / 0.45 : 0;
             const exitE = exit * exit;
+            const vis = enterE * (1 - exitE);
 
             gsap.set(card, {
-              opacity: enterE * (1 - exitE),
+              opacity: vis,
               x: dir * (1 - enterE) + dir * exitE * 0.7,
               y: exitE * -40,
             });
             gsap.set(dot, {
-              scale: Math.max(enterE * (1 - exitE), 0.001),
+              scale: Math.max(vis, 0.001),
             });
-            revealChars(title, Math.min(enter - exitE * 1.4, 1));
-            revealChars(
-              body,
-              Math.min(Math.min(enter * 1.2, 1) - exitE * 1.4, 1)
-            );
+            if (illu) gsap.set(illu, { opacity: vis });
+            revealChars(title, vis);
+            revealChars(body, vis);
           },
           onLeaveBack: () => {
             gsap.set(card, { opacity: 0, x: dir, y: 0 });
             gsap.set(dot, { scale: 0 });
+            if (illu) gsap.set(illu, { opacity: 0 });
             revealChars(title, 0);
             revealChars(body, 0);
           },
@@ -480,6 +691,7 @@ export default function HowItWorks() {
             if (!isLast) return;
             gsap.set(card, { opacity: 0, x: dir * 0.7, y: -40 });
             gsap.set(dot, { scale: 0.001 });
+            if (illu) gsap.set(illu, { opacity: 0 });
           },
         });
       });
@@ -578,7 +790,7 @@ export default function HowItWorks() {
               />
 
               <div className="relative z-10 h-full">
-                {renderStep(STEPS[0], 0, true)}
+                {renderStep(STEPS[0], 0, true, stepEdit(0))}
               </div>
             </div>
           </div>
@@ -592,7 +804,9 @@ export default function HowItWorks() {
               background: "linear-gradient(180deg, #FF7F9B, #F89A9A, #D7A7FF)",
             }}
           />
-          {STEPS.slice(1).map((step, i) => renderStep(step, i + 1, false))}
+          {STEPS.slice(1).map((step, i) =>
+            renderStep(step, i + 1, false, stepEdit(i + 1))
+          )}
         </div>
 
         <div className="timeline-flood relative h-[200vh]">
@@ -608,6 +822,80 @@ export default function HowItWorks() {
           </div>
         </div>
       </div>
+
+      {editMode && (
+        <div className="fixed right-4 bottom-4 z-[100] w-72 rounded-2xl border border-white/10 bg-black/90 p-4 text-white shadow-2xl backdrop-blur">
+          <div className="mb-3 flex items-center justify-between">
+            <div className="text-xs font-semibold tracking-[0.18em] text-white/60 uppercase">
+              Placement
+            </div>
+            <button
+              type="button"
+              onClick={() => setEditMode(false)}
+              className="rounded-md bg-white/10 px-2 py-0.5 text-xs text-white/70 hover:bg-white/20"
+            >
+              Esc 5
+            </button>
+          </div>
+
+          <div className="mb-3 flex flex-wrap gap-1.5">
+            {PLACEMENT_KEYS.map((k) => (
+              <button
+                key={k}
+                type="button"
+                onClick={() => setSelected(k)}
+                className={`rounded-full px-2.5 py-1 text-[11px] capitalize transition ${
+                  selected === k
+                    ? "bg-gradient-to-r from-[#FF7F9B] to-[#D7A7FF] text-white"
+                    : "bg-white/10 text-white/70 hover:bg-white/20"
+                }`}
+              >
+                {k}
+              </button>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-4 gap-2">
+            {(["x", "y", "w", "rot"] as const).map((field) => (
+              <label key={field} className="flex flex-col gap-1 text-[10px] text-white/50 uppercase">
+                {field}
+                <input
+                  type="number"
+                  value={Math.round(placements[selected][field] * 10) / 10}
+                  onChange={(e) => {
+                    const v = Number(e.target.value);
+                    if (Number.isNaN(v)) return;
+                    setPlacements((p) => ({
+                      ...p,
+                      [selected]: {
+                        ...p[selected],
+                        [field]:
+                          field === "w"
+                            ? clamp(v, 5, 80)
+                            : field === "rot"
+                              ? clamp(v, -180, 180)
+                              : clamp(v, 0, 100),
+                      },
+                    }));
+                  }}
+                  className="w-full rounded-md border border-white/10 bg-white/5 px-1.5 py-1 text-xs text-white outline-none focus:border-[#FF7F9B]"
+                />
+              </label>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={copyJson}
+            className="mt-3 w-full rounded-lg bg-gradient-to-r from-[#FF7F9B] to-[#D7A7FF] py-2 text-xs font-semibold text-white transition hover:opacity-90"
+          >
+            {copied ? "Copied!" : "Copy JSON"}
+          </button>
+          <p className="mt-2 text-[10px] leading-relaxed text-white/40">
+            Drag image · corner handle to resize · press 5 to toggle
+          </p>
+        </div>
+      )}
     </section>
   );
 }
