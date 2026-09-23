@@ -32,3 +32,15 @@ header.nav-on-light .nav-links {
 header.nav-on-light .nav-links a:hover {
   color: #000;
 }
+
+.how-char {
+  will-change: transform, opacity, filter;
+}
+
+.how-char-accent {
+  background-image: linear-gradient(135deg, #ff7f9b, #f89a9a, #d7a7ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}

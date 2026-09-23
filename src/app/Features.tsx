@@ -50,6 +50,8 @@ export default function Features() {
     const root = rootRef.current;
     if (!root) return;
 
+    const showcase = document.getElementById("showcase");
+
     const ctx = gsap.context(() => {
       gsap.fromTo(
         ".feature-card",
@@ -66,6 +68,37 @@ export default function Features() {
           },
         }
       );
+
+      const cards = gsap.utils.toArray<HTMLElement>(".feature-card", root);
+      if (cards.length) {
+        const split = gsap.timeline({
+          scrollTrigger: {
+            trigger: root,
+            start: "center center",
+            endTrigger: showcase ?? root,
+            end: "top 60%",
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        cards.forEach((card, i) => {
+          const dir = i === 0 ? -1 : i === 2 ? 1 : 0;
+          split.fromTo(
+            card,
+            { xPercent: 0, yPercent: 0, scale: 1 },
+            {
+              xPercent: dir * 90,
+              yPercent: i === 1 ? -25 : 15,
+              scale: 1.7,
+              ease: "none",
+            },
+            0
+          );
+        });
+
+        ScrollTrigger.refresh();
+      }
     }, root);
 
     return () => ctx.revert();
@@ -75,7 +108,7 @@ export default function Features() {
     <section
       ref={rootRef}
       id="features"
-      className="relative flex min-h-screen flex-col justify-center px-6 py-24 sm:px-12 md:px-20"
+      className="relative flex min-h-screen flex-col justify-center px-6 py-10 sm:px-12 md:px-20"
     >
       <div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-3">
         {CARDS.map(

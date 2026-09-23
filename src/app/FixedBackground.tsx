@@ -23,7 +23,7 @@ export default function FixedBackground() {
       ease: "power2.out",
     });
 
-    const st = ScrollTrigger.create({
+    const stWhite = ScrollTrigger.create({
       trigger: "#features",
       start: "top 35%",
       end: "top top",
@@ -59,7 +59,7 @@ export default function FixedBackground() {
 
     return () => {
       intro.kill();
-      st.kill();
+      stWhite.kill();
     };
   }, []);
 
