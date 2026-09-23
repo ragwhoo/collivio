@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Search, Users, Hammer, Award } from "lucide-react";
-import WhyPanel from "./WhyPanel";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -178,8 +177,8 @@ function setHowWipe(p: number) {
 
   content.style.opacity = "1";
 
-  const enterEnd = 0.48;
-  const exitStart = 0.58;
+  const enterEnd = 0.6;
+  const exitStart = 0.55;
   const enterP = Math.min(p / enterEnd, 1);
 
   const n = chars.length;
@@ -534,100 +533,6 @@ export default function HowItWorks() {
 
       gsap.set(".timeline-flood-progress", { scaleY: 0, scaleX: 1, width: 6 });
       gsap.set(".timeline-flood-axis", { opacity: 1 });
-      gsap.set(".why-layer", { autoAlpha: 0 });
-      gsap.set(".why-scroll", { y: 0 });
-
-      const revealWhy = (screenProgress: number, titleEnd = 0.4) => {
-        const scroll = root.querySelector<HTMLElement>(".why-scroll");
-        if (!scroll) return;
-        const viewH = window.innerHeight;
-
-        const title = scroll.querySelector<HTMLElement>(".why-title");
-        if (title) {
-          const chars = title.querySelectorAll<HTMLElement>(".how-char");
-          const n = chars.length;
-          const enterEnd = titleEnd * 0.5;
-          const exitStart = titleEnd * 0.6;
-          const enterP = Math.min(screenProgress / enterEnd, 1);
-
-          if (screenProgress < exitStart) {
-            chars.forEach((ch, i) => {
-              const s = (i / n) * 0.55;
-              const e = s + 0.45;
-              const t = Math.min(Math.max((enterP - s) / (e - s), 0), 1);
-              const ease = 1 - Math.pow(1 - t, 3);
-              ch.style.opacity = String(ease);
-              ch.style.filter = t >= 1 ? "none" : `blur(${18 * (1 - ease)}px)`;
-              ch.style.transform = `translateY(${0.45 * (1 - ease)}em) rotate(${8 * (1 - ease)}deg) scale(${0.88 + 0.12 * ease})`;
-            });
-          } else {
-            const exitP =
-              (screenProgress - exitStart) / (titleEnd - exitStart);
-            chars.forEach((ch, i) => {
-              const s = ((n - 1 - i) / n) * 0.55;
-              const e = s + 0.45;
-              const t = Math.min(Math.max((exitP - s) / (e - s), 0), 1);
-              const ease = t * t;
-              ch.style.opacity = String(1 - ease);
-              ch.style.filter = ease <= 0 ? "none" : `blur(${18 * ease}px)`;
-              ch.style.transform = `translateY(${-0.45 * ease}em) rotate(${-8 * ease}deg) scale(${1 - 0.12 * ease})`;
-            });
-          }
-        }
-
-        const revealAt = (el: HTMLElement) => {
-          const rect = el.getBoundingClientRect();
-          const start = viewH * 1.0;
-          const end = viewH * 0.55;
-          const p = Math.min(
-            Math.max((start - rect.top) / (start - end), 0),
-            1
-          );
-          if (rect.bottom <= viewH * 1.05 && rect.top < viewH) {
-            return Math.max(p, Math.min((viewH - rect.top) / (viewH * 0.35), 1));
-          }
-          return p;
-        };
-
-        if (screenProgress >= titleEnd * 0.98 || screenProgress >= 0.98) {
-          scroll.querySelectorAll<HTMLElement>(".why-paragraph").forEach((el) => {
-            revealChars(el, 1);
-          });
-          scroll.querySelectorAll<HTMLElement>(".why-reason").forEach((card) => {
-            const ct = card.querySelector<HTMLElement>(".why-reason-title");
-            const cb = card.querySelector<HTMLElement>(".why-reason-body");
-            card.style.opacity = "1";
-            card.style.transform = "translateY(0)";
-            if (ct) revealChars(ct, 1);
-            if (cb) revealChars(cb, 1);
-          });
-          const ideaTitleAll = scroll.querySelector<HTMLElement>(".why-idea-title");
-          if (ideaTitleAll) revealChars(ideaTitleAll, 1);
-          const taglineAll = scroll.querySelector<HTMLElement>(".why-tagline");
-          if (taglineAll) revealChars(taglineAll, 1);
-          return;
-        }
-
-        scroll.querySelectorAll<HTMLElement>(".why-paragraph").forEach((el) => {
-          revealChars(el, revealAt(el));
-        });
-
-        scroll.querySelectorAll<HTMLElement>(".why-reason").forEach((card) => {
-          const ct = card.querySelector<HTMLElement>(".why-reason-title");
-          const cb = card.querySelector<HTMLElement>(".why-reason-body");
-          const p = revealAt(card);
-          const e = 1 - Math.pow(1 - p, 3);
-          card.style.opacity = String(e);
-          card.style.transform = `translateY(${36 * (1 - e)}px)`;
-          if (ct) revealChars(ct, e);
-          if (cb) revealChars(cb, e);
-        });
-
-        const ideaTitle = scroll.querySelector<HTMLElement>(".why-idea-title");
-        if (ideaTitle) revealChars(ideaTitle, revealAt(ideaTitle));
-        const tagline = scroll.querySelector<HTMLElement>(".why-tagline");
-        if (tagline) revealChars(tagline, revealAt(tagline));
-      };
 
       ScrollTrigger.create({
         trigger: ".timeline-seed",
@@ -799,8 +704,8 @@ export default function HowItWorks() {
         onUpdate: (self) => {
           applyContinuum();
           const p = self.progress;
-          const growEnd = 0.18;
-          const expandEnd = 0.28;
+          const growEnd = 0.48;
+          const expandEnd = 0.62;
 
           const header = document.querySelector("header");
           if (p > 0.06) {
@@ -827,12 +732,10 @@ export default function HowItWorks() {
               left: "50%",
               xPercent: -50,
               scaleY: p <= growEnd ? lineP : 1,
-              borderRadius: e > 0.5 ? 0 : 999,
+              borderRadius: w <= 12 ? 999 : 0,
               opacity: 1,
             });
             gsap.set(".timeline-flood-axis", { opacity: Math.max(1 - e, 0) });
-            gsap.set(".why-layer", { autoAlpha: 0 });
-            gsap.set(".why-scroll", { y: 0 });
             return;
           }
 
@@ -849,25 +752,6 @@ export default function HowItWorks() {
           });
           gsap.set(".timeline-flood-axis", { opacity: 0 });
           gsap.set(".timeline-flood-progress", { opacity: 1 });
-
-          const whyP = Math.min((p - expandEnd) / (1 - expandEnd), 1);
-          gsap.set(".why-layer", { autoAlpha: Math.min(whyP / 0.03, 1) });
-
-          const titleEnd = 0.4;
-          const scroll = root.querySelector<HTMLElement>(".why-scroll");
-          if (scroll) {
-            const contentH = scroll.scrollHeight;
-            const viewH = window.innerHeight;
-            const max = Math.max(contentH - viewH, 0);
-            if (whyP <= titleEnd) {
-              gsap.set(scroll, { y: 0 });
-            } else {
-              const moveP = (whyP - titleEnd) / (1 - titleEnd);
-              const eased = moveP >= 1 ? 1 : moveP;
-              gsap.set(scroll, { y: -max * eased });
-            }
-          }
-          revealWhy(whyP, titleEnd);
         },
       });
     }, root);
@@ -937,7 +821,7 @@ export default function HowItWorks() {
           )}
         </div>
 
-        <div className="timeline-flood relative h-[700vh]">
+        <div className="timeline-flood relative h-[200vh]">
           <div className="sticky top-0 h-screen overflow-hidden">
             <div className="timeline-flood-axis absolute inset-y-0 left-1/2 z-0 w-1.5 -translate-x-1/2 rounded-full bg-black/15" />
             <div
@@ -947,11 +831,6 @@ export default function HowItWorks() {
                   "linear-gradient(180deg, #FF7F9B, #F89A9A, #D7A7FF)",
               }}
             />
-            <div className="why-layer absolute inset-0 z-10 overflow-hidden">
-              <div className="why-scroll will-change-transform">
-                <WhyPanel />
-              </div>
-            </div>
           </div>
         </div>
       </div>
