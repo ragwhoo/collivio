@@ -44,26 +44,44 @@ export default function Hero() {
         .fromTo(
           ".hero-eyebrow",
           { opacity: 0, y: 16 },
-          { opacity: 1, y: 0, duration: 0.8 },
-          0.3
+          { opacity: 1, y: 0, duration: 0.7 },
+          0.4
         )
         .fromTo(
-          ".hero-title",
+          ".hero-title-line",
           { opacity: 0, y: 40 },
-          { opacity: 1, y: 0, duration: 1 },
-          0.4
+          { opacity: 1, y: 0, duration: 0.8, stagger: 0.35 },
+          0.9
         )
         .fromTo(
           ".hero-sub",
           { opacity: 0, y: 24 },
-          { opacity: 1, y: 0, duration: 0.9 },
-          0.65
+          { opacity: 1, y: 0, duration: 0.8 },
+          2.0
         )
         .fromTo(
           ".hero-cta",
           { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.8, stagger: 0.12 },
-          0.9
+          { opacity: 1, y: 0, duration: 0.7, stagger: 0.18 },
+          2.6
+        )
+        .fromTo(
+          ".nav-logo",
+          { opacity: 0, y: -16 },
+          { opacity: 1, y: 0, duration: 0.7 },
+          3.2
+        )
+        .fromTo(
+          ".nav-item",
+          { opacity: 0, y: -12 },
+          { opacity: 1, y: 0, duration: 0.5, stagger: 0.08 },
+          3.4
+        )
+        .fromTo(
+          ".nav-cta",
+          { opacity: 0, y: -12 },
+          { opacity: 1, y: 0, duration: 0.5 },
+          3.8
         )
         .fromTo(
           ".orbit",
@@ -129,6 +147,7 @@ export default function Hero() {
   }, []);
 
   return (
+    <>
     <div
       ref={rootRef}
       className="relative h-screen w-full overflow-hidden"
@@ -249,34 +268,35 @@ export default function Hero() {
       <div
         className="absolute inset-0 z-10 flex flex-col items-start justify-end px-6 pb-24 text-left sm:px-12 md:px-20"
       >
-        <p className="hero-eyebrow mb-4 text-xs font-medium uppercase tracking-[0.25em] text-white/60">
-          students &nbsp;&nbsp;&middot;&nbsp;&nbsp; projects &nbsp;&nbsp;&middot;&nbsp;&nbsp; experience
+        <p className="hero-eyebrow mb-4 text-xs font-medium uppercase tracking-[0.25em] text-white/60 opacity-0">
+          students   ·   projects   ·   experience
         </p>
         <h1
           className="hero-title font-semibold tracking-tight text-white"
           style={{ lineHeight: 1 }}
         >
-          <span className="block text-7xl sm:text-8xl md:text-9xl">
+          <span className="hero-title-line block text-7xl opacity-0 sm:text-8xl md:text-9xl">
             Tomorrow,
           </span>
           <span
-            className="block bg-clip-text text-transparent text-7xl sm:text-8xl md:text-9xl"
+            className="hero-title-line block bg-clip-text text-transparent text-7xl opacity-0 sm:text-8xl md:text-9xl"
             style={{
               backgroundImage:
                 "linear-gradient(135deg, #FF7F9B, #F89A9A, #D7A7FF)",
-              lineHeight: 1.15,
-              paddingBottom: "0.1em",
-              marginTop: "-0.12em",
+              lineHeight: 1.25,
+              paddingBottom: "0.15em",
+              marginTop: "-0.28em",
+              overflow: "visible",
             }}
           >
             Together.
           </span>
         </h1>
-        <p className="hero-sub mt-3 max-w-xl text-lg font-light text-white/75 sm:text-xl">
+        <p className="hero-sub mt-3 max-w-xl text-lg font-light text-white/75 opacity-0 sm:text-xl">
           Join a community of students building their future, one project at a
           time.
         </p>
-        <div className="hero-cta mt-8 flex flex-col gap-4 sm:flex-row">
+        <div className="hero-cta mt-8 flex flex-col gap-4 opacity-0 sm:flex-row">
           <button className="rounded-full bg-white px-8 py-3 text-sm font-semibold text-black transition-transform hover:scale-105">
             Get Started
           </button>
@@ -284,41 +304,42 @@ export default function Hero() {
             Learn More
           </button>
         </div>
-        <div className="hero-cta mt-6">
+        <div className="hero-cta mt-6 opacity-0">
           <Avatar21 />
         </div>
       </div>
 
-      <header className="absolute left-0 right-0 -top-2 z-20 flex items-center justify-between px-6 sm:px-8">
+      <header className="fixed left-0 right-0 -top-2 z-50 flex items-center justify-between px-6 pb-3 sm:px-8">
         <Image
           src="/logo.png"
           alt="Collivio logo"
           width={120}
           height={40}
           priority
-          className="h-auto w-24 sm:w-28 md:w-32"
+          className="nav-logo h-auto w-24 opacity-0 sm:w-28 md:w-32"
         />
-        <nav className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-6 text-base font-medium text-white/80 sm:gap-8 sm:text-lg">
-          <a href="#" className="transition-colors hover:text-white">
+        <nav className="nav-links absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-6 text-base font-medium text-white/80 sm:gap-8 sm:text-lg">
+          <a href="#" className="nav-item opacity-0 transition-colors hover:text-white">
             Home
           </a>
-          <a href="#" className="transition-colors hover:text-white">
+          <a href="#" className="nav-item opacity-0 transition-colors hover:text-white">
             About
           </a>
-          <a href="#" className="transition-colors hover:text-white">
+          <a href="#features" className="nav-item opacity-0 transition-colors hover:text-white">
             Features
           </a>
-          <a href="#" className="transition-colors hover:text-white">
+          <a href="#" className="nav-item opacity-0 transition-colors hover:text-white">
             Contact
           </a>
         </nav>
         <a
           href="#"
-          className="rounded-full bg-white px-5 py-2 text-sm font-semibold text-black transition-transform hover:scale-105"
+          className="nav-cta rounded-full bg-white px-5 py-2 text-sm font-semibold text-black opacity-0 transition-transform hover:scale-105"
         >
           Get Started
         </a>
       </header>
     </div>
+    </>
   );
 }
