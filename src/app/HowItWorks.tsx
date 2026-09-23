@@ -11,25 +11,45 @@ gsap.registerPlugin(ScrollTrigger);
 const STEPS = [
   {
     title: "Discover",
-    body: "Browse open ideas and microprojects that match your skills and interests.",
+    body: "Browse open ideas and microprojects that match your skills and interests. Filter by domain, time commitment, and skill level so you only see work you can actually ship.",
+    details: [
+      "Personalized feed based on your stack",
+      "Skill tags and difficulty filters",
+      "Live project counts and deadlines",
+    ],
     icon: Search,
     side: "left" as const,
   },
   {
     title: "Find collaborators",
-    body: "Match with students across colleges who want to build the same thing.",
+    body: "Match with students across colleges who want to build the same thing. See verified skills, past ships, and availability before you commit to a team.",
+    details: [
+      "Cross-college talent pool",
+      "Verified skill and portfolio tags",
+      "Availability and time-zone match",
+    ],
     icon: Users,
     side: "right" as const,
   },
   {
     title: "Build together",
-    body: "Ship real work in small teams with shared goals and clear milestones.",
+    body: "Ship real work in small teams with shared goals and clear milestones. Track progress in one place so everyone knows what done looks like.",
+    details: [
+      "Shared milestones and check-ins",
+      "Built-in chat and task board",
+      "Auto progress updates for everyone",
+    ],
     icon: Hammer,
     side: "left" as const,
   },
   {
     title: "Showcase your work",
-    body: "Publish results to your profile and turn projects into opportunities.",
+    body: "Publish results to your profile and turn projects into opportunities. Recruiters and founders browse real builds — not just resumes.",
+    details: [
+      "Public project pages with demos",
+      "Proof of contribution on each ship",
+      "Opportunities routed to your inbox",
+    ],
     icon: Award,
     side: "right" as const,
   },
@@ -106,8 +126,8 @@ function setHowWipe(p: number) {
 
   content.style.opacity = "1";
 
-  const enterEnd = 0.38;
-  const exitStart = 0.72;
+  const enterEnd = 0.48;
+  const exitStart = 0.58;
   const enterP = Math.min(p / enterEnd, 1);
 
   const n = chars.length;
@@ -153,7 +173,7 @@ function renderStep(
   index: number,
   isFirst: boolean
 ) {
-  const { title, body, icon: Icon, side } = step;
+  const { title, body, details, icon: Icon, side } = step;
   return (
     <div
       key={title}
@@ -188,6 +208,18 @@ function renderStep(
         <p className="milestone-body mt-3 text-sm leading-relaxed text-black/60 sm:text-base">
           {splitChars(body)}
         </p>
+
+        <ul className="mt-4 space-y-2 border-t border-black/5 pt-4">
+          {details.map((item) => (
+            <li
+              key={item}
+              className="flex items-start gap-2.5 text-sm leading-snug text-black/55"
+            >
+              <span className="mt-1.5 inline-block size-1.5 shrink-0 rounded-full bg-gradient-to-br from-[#FF7F9B] to-[#D7A7FF]" />
+              {item}
+            </li>
+          ))}
+        </ul>
 
         {index === STEPS.length - 1 && (
           <div className="mt-6 overflow-hidden rounded-xl border border-black/10">
@@ -265,18 +297,29 @@ export default function HowItWorks() {
         const leaf = root.querySelector<HTMLElement>(".timeline-leaf");
         const seedLine = window.innerHeight / 2;
         const leafH = leaf ? leaf.offsetHeight : 0;
-        const total = seedLine + leafH;
+        const flood = root.querySelector<HTMLElement>(".timeline-flood");
+        const floodH = flood ? Math.min(flood.offsetHeight / 2, window.innerHeight) : 0;
+        const total = seedLine + leafH + floodH;
 
-        gsap.set([".timeline-progress", ".timeline-leaf-progress"], {
-          backgroundSize: `100% ${total}px`,
-          backgroundRepeat: "no-repeat",
-        });
+        gsap.set(
+          [".timeline-progress", ".timeline-leaf-progress", ".timeline-flood-progress"],
+          {
+            backgroundSize: `100% ${total}px`,
+            backgroundRepeat: "no-repeat",
+          }
+        );
         gsap.set(".timeline-progress", { backgroundPosition: "0px 0px" });
         gsap.set(".timeline-leaf-progress", {
           backgroundPosition: `0px ${-seedLine}px`,
         });
+        gsap.set(".timeline-flood-progress", {
+          backgroundPosition: `0px ${-(seedLine + leafH)}px`,
+        });
       };
       applyContinuum();
+
+      gsap.set(".timeline-flood-progress", { scaleY: 0, scaleX: 1, width: 6 });
+      gsap.set(".timeline-flood-axis", { opacity: 1 });
 
       ScrollTrigger.create({
         trigger: ".timeline-seed",
@@ -392,8 +435,8 @@ export default function HowItWorks() {
 
         ScrollTrigger.create({
           trigger: step,
-          start: isLast ? "top 75%" : "top 75%",
-          end: isLast ? "bottom 25%" : "center center",
+          start: "top 75%",
+          end: isLast ? "bottom top" : "center center",
           scrub: true,
           onUpdate: (self) => {
             if (!isLast) {
@@ -407,35 +450,85 @@ export default function HowItWorks() {
               return;
             }
 
-            const enter = Math.min(self.progress / 0.5, 1);
+            const enter = Math.min(self.progress / 0.35, 1);
             const enterE = 1 - Math.pow(1 - enter, 3);
             const exit =
-              self.progress > 0.6 ? (self.progress - 0.6) / 0.4 : 0;
+              self.progress > 0.55 ? (self.progress - 0.55) / 0.45 : 0;
             const exitE = exit * exit;
 
-            const opacity = enterE * (1 - exitE);
-            const x = dir * (1 - enterE) + dir * exitE * 0.6;
-
-            gsap.set(card, { opacity, x });
-            gsap.set(dot, { scale: Math.max(enterE * (1 - exitE), 0.001) });
-            revealChars(title, Math.min(enter - exitE * 1.5, 1));
+            gsap.set(card, {
+              opacity: enterE * (1 - exitE),
+              x: dir * (1 - enterE) + dir * exitE * 0.7,
+              y: exitE * -40,
+            });
+            gsap.set(dot, {
+              scale: Math.max(enterE * (1 - exitE), 0.001),
+            });
+            revealChars(title, Math.min(enter - exitE * 1.4, 1));
             revealChars(
               body,
-              Math.min(Math.min(enter * 1.2, 1) - exitE * 1.5, 1)
+              Math.min(Math.min(enter * 1.2, 1) - exitE * 1.4, 1)
             );
           },
           onLeaveBack: () => {
-            gsap.set(card, { opacity: 0, x: dir });
+            gsap.set(card, { opacity: 0, x: dir, y: 0 });
             gsap.set(dot, { scale: 0 });
             revealChars(title, 0);
             revealChars(body, 0);
           },
           onLeave: () => {
             if (!isLast) return;
-            gsap.set(card, { opacity: 0, x: dir * 0.6 });
+            gsap.set(card, { opacity: 0, x: dir * 0.7, y: -40 });
             gsap.set(dot, { scale: 0.001 });
           },
         });
+      });
+
+      ScrollTrigger.create({
+        trigger: ".timeline-flood",
+        start: "top bottom",
+        end: "bottom bottom",
+        scrub: true,
+        onUpdate: (self) => {
+          applyContinuum();
+          const p = self.progress;
+          const growEnd = 0.62;
+
+          const lineP = Math.min(p / growEnd, 1);
+          gsap.set(".timeline-flood-progress", { scaleY: lineP });
+
+          if (p <= growEnd) {
+            gsap.set([".timeline-flood-axis", ".timeline-flood-progress"], {
+              width: 6,
+              height: "100%",
+              top: 0,
+              bottom: 0,
+              left: "50%",
+              xPercent: -50,
+              borderRadius: 999,
+              opacity: 1,
+            });
+            gsap.set(".timeline-flood-progress", { scaleY: lineP });
+            return;
+          }
+
+          const expand = (p - growEnd) / (1 - growEnd);
+          const e = 1 - Math.pow(1 - expand, 3);
+          const w = 6 + (window.innerWidth - 6) * e;
+
+          gsap.set([".timeline-flood-axis", ".timeline-flood-progress"], {
+            width: w,
+            height: "100%",
+            top: 0,
+            bottom: 0,
+            left: "50%",
+            xPercent: -50,
+            scaleY: 1,
+            borderRadius: 0,
+          });
+          gsap.set(".timeline-flood-axis", { opacity: Math.max(1 - e, 0) });
+          gsap.set(".timeline-flood-progress", { opacity: 1 });
+        },
       });
     }, root);
 
@@ -500,6 +593,19 @@ export default function HowItWorks() {
             }}
           />
           {STEPS.slice(1).map((step, i) => renderStep(step, i + 1, false))}
+        </div>
+
+        <div className="timeline-flood relative h-[200vh]">
+          <div className="sticky top-0 h-screen overflow-hidden">
+            <div className="timeline-flood-axis absolute inset-y-0 left-1/2 z-0 w-1.5 -translate-x-1/2 rounded-full bg-black/15" />
+            <div
+              className="timeline-flood-progress absolute inset-y-0 left-1/2 z-0 w-1.5 origin-top -translate-x-1/2 rounded-full"
+              style={{
+                background:
+                  "linear-gradient(180deg, #FF7F9B, #F89A9A, #D7A7FF)",
+              }}
+            />
+          </div>
         </div>
       </div>
     </section>
