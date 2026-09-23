@@ -29,6 +29,28 @@ header.nav-on-light .nav-links {
   color: rgba(0, 0, 0, 0.8);
 }
 
+@keyframes sidePanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes sideLetterIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 header.nav-on-light .nav-links a:hover {
   color: #000;
 }

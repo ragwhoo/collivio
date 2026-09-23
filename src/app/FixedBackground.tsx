@@ -14,10 +14,16 @@ export default function FixedBackground() {
     const root = rootRef.current;
     if (!root) return;
 
-    gsap.set(".fixed-bg-image", { opacity: 0, filter: "blur(0px)", scale: 1 });
-    gsap.set(".fixed-bg-white", { opacity: 0, background: "transparent" });
+    const image = root.querySelector<HTMLElement>(".fixed-bg-image");
+    const white = root.querySelector<HTMLElement>(".fixed-bg-white");
+    const svg = root.querySelector<HTMLElement>(".fixed-bg-svg");
+    if (!image || !white || !svg) return;
 
-    const intro = gsap.to(".fixed-bg-image", {
+    gsap.set(image, { opacity: 0, filter: "blur(0px)", scale: 1 });
+    gsap.set(white, { opacity: 0, background: "transparent" });
+    gsap.set(svg, { opacity: 0 });
+
+    const intro = gsap.to(image, {
       opacity: 1,
       duration: 1.4,
       ease: "power2.out",
@@ -31,7 +37,7 @@ export default function FixedBackground() {
       onUpdate: (self) => {
         const p = self.progress;
         const r = p * 140;
-        gsap.set(".fixed-bg-image", {
+        gsap.set(image, {
           filter: `blur(${p * 24}px)`,
           scale: 1 + p * 0.08,
         });
@@ -42,17 +48,20 @@ export default function FixedBackground() {
           header?.classList.remove("nav-on-light");
         }
         if (p < 0.02) {
-          gsap.set(".fixed-bg-white", { opacity: 0, background: "transparent" });
+          gsap.set(white, { opacity: 0, background: "transparent" });
+          gsap.set(svg, { opacity: 0 });
         } else {
-          gsap.set(".fixed-bg-white", {
+          gsap.set(white, {
             opacity: 1,
             background: `radial-gradient(circle at 50% 100%, #fff 0%, #fff ${r}%, transparent ${Math.min(r + 12, 150)}%)`,
           });
+          gsap.set(svg, { opacity: 1 });
         }
       },
       onLeaveBack: () => {
-        gsap.set(".fixed-bg-white", { opacity: 0, background: "transparent" });
-        gsap.set(".fixed-bg-image", { filter: "blur(0px)", scale: 1 });
+        gsap.set(white, { opacity: 0, background: "transparent" });
+        gsap.set(svg, { opacity: 0 });
+        gsap.set(image, { filter: "blur(0px)", scale: 1 });
         document.querySelector("header")?.classList.remove("nav-on-light");
       },
     });
@@ -81,6 +90,7 @@ export default function FixedBackground() {
       </div>
 
       <div className="fixed-bg-white absolute inset-0" />
+      <div className="fixed-bg-svg absolute inset-0 bg-[url('/bg.svg')] bg-cover bg-center bg-no-repeat" />
     </div>
   );
 }

@@ -1,11 +1,24 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Search, Users, Hammer, Award } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
+
+// Palette sampled from public/hero 3.png
+const TL_CORAL = "#FD9779";
+const TL_MAGENTA = "#C74990";
+const TL_PURPLE = "#592AA8";
+const TL_GOLD = "#FED68B";
+const TL_GRADIENT_V =
+  "linear-gradient(180deg, #FD9779, #C74990, #592AA8)";
+const TL_GRADIENT_R =
+  "linear-gradient(90deg, #FD9779, #C74990, #592AA8)";
+const TL_DOT_FROM = "from-[#FD9779]";
+const TL_DOT_TO = "to-[#592AA8]";
 
 const STEPS = [
   {
@@ -54,7 +67,13 @@ const STEPS = [
   },
 ] as const;
 
-type PlacementKey = "discover" | "find" | "build" | "showcase";
+type PlacementKey =
+  | "discover"
+  | "find"
+  | "build"
+  | "showcase"
+  | "student"
+  | "recruiter";
 
 type Placement = {
   src: string;
@@ -69,7 +88,18 @@ const PLACEMENT_KEYS: PlacementKey[] = [
   "find",
   "build",
   "showcase",
+  "student",
+  "recruiter",
 ];
+
+const ILLUSTRATION_KEYS: PlacementKey[] = [
+  "discover",
+  "find",
+  "build",
+  "showcase",
+];
+
+const CHARACTER_KEYS: PlacementKey[] = ["student", "recruiter"];
 
 const DEFAULT_PLACEMENTS: Record<PlacementKey, Placement> = {
   discover: {
@@ -98,6 +128,20 @@ const DEFAULT_PLACEMENTS: Record<PlacementKey, Placement> = {
     x: 11.390621423721313,
     y: 44.88752962241051,
     w: 80,
+    rot: 0,
+  },
+  student: {
+    src: "/characters/25.svg",
+    x: 52,
+    y: 50.0511298134418,
+    w: 96.25,
+    rot: 0,
+  },
+  recruiter: {
+    src: "/characters/24.svg",
+    x: 50,
+    y: 48.824129112052404,
+    w: 96.3,
     rot: 0,
   },
 };
@@ -248,7 +292,7 @@ function renderStep(
           : "mx-auto min-h-screen w-full max-w-5xl px-6 py-24"
       }`}
     >
-      <div className="timeline-dot absolute left-1/2 top-1/2 z-10 flex size-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white bg-gradient-to-br from-[#FF7F9B] to-[#D7A7FF] shadow-lg">
+      <div className="timeline-dot absolute left-1/2 top-1/2 z-10 flex size-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white bg-gradient-to-br from-[#FD9779] to-[#592AA8] shadow-lg">
         <Icon className="size-6 text-white" strokeWidth={2.2} />
       </div>
 
@@ -270,7 +314,7 @@ function renderStep(
             side === "left" ? "sm:justify-start" : ""
           }`}
         >
-          <span className="inline-block size-1.5 rounded-full bg-gradient-to-br from-[#FF7F9B] to-[#D7A7FF]" />
+          <span className="inline-block size-1.5 rounded-full bg-gradient-to-br from-[#FD9779] to-[#592AA8]" />
           step {index + 1}
         </div>
         <h2 className="milestone-title text-2xl font-semibold leading-tight sm:text-3xl">
@@ -286,7 +330,7 @@ function renderStep(
               key={item}
               className="flex items-start gap-2.5 text-sm leading-snug text-black/55"
             >
-              <span className="mt-1.5 inline-block size-1.5 shrink-0 rounded-full bg-gradient-to-br from-[#FF7F9B] to-[#D7A7FF]" />
+              <span className="mt-1.5 inline-block size-1.5 shrink-0 rounded-full bg-gradient-to-br from-[#FD9779] to-[#592AA8]" />
               {item}
             </li>
           ))}
@@ -306,7 +350,7 @@ function renderStep(
             touchAction: "none",
             outline:
               edit?.editMode && edit.selected
-                ? "2px dashed #FF7F9B"
+                ? "2px dashed #FD9779"
                 : edit?.editMode
                   ? "1px dashed rgba(0,0,0,0.25)"
                   : undefined,
@@ -329,7 +373,7 @@ function renderStep(
           />
           {edit?.editMode && (
             <div
-              className="absolute -right-2.5 -bottom-2.5 size-5 rounded-full border-2 border-white bg-[#FF7F9B] shadow"
+              className="absolute -right-2.5 -bottom-2.5 size-5 rounded-full border-2 border-white bg-[#FD9779] shadow"
               style={{ cursor: "nwse-resize" }}
               onPointerDown={(e) => {
                 e.preventDefault();
@@ -377,11 +421,17 @@ export default function HowItWorks() {
   }, []);
 
   const onDrag = useCallback((key: PlacementKey, e: React.PointerEvent) => {
-    const step = (e.currentTarget as HTMLElement).closest(
-      ".timeline-step"
-    ) as HTMLElement | null;
-    if (!step) return;
-    const rect = step.getBoundingClientRect();
+    const isCharacter = (CHARACTER_KEYS as string[]).includes(key);
+    const bounds =
+      (isCharacter
+        ? (e.currentTarget as HTMLElement).closest(
+            ".timeline-flood"
+          )
+        : (e.currentTarget as HTMLElement).closest(".timeline-step")) as
+        | HTMLElement
+        | null;
+    if (!bounds) return;
+    const rect = bounds.getBoundingClientRect();
     const startX = e.clientX;
     const startY = e.clientY;
     const orig = { ...placementsRef.current[key] };
@@ -407,11 +457,15 @@ export default function HowItWorks() {
   }, []);
 
   const onResize = useCallback((key: PlacementKey, e: React.PointerEvent) => {
-    const step = (e.currentTarget as HTMLElement).closest(
-      ".timeline-step"
-    ) as HTMLElement | null;
-    if (!step) return;
-    const rect = step.getBoundingClientRect();
+    const isCharacter = (CHARACTER_KEYS as string[]).includes(key);
+    const bounds =
+      (isCharacter
+        ? (e.currentTarget as HTMLElement).closest(".timeline-flood")
+        : (e.currentTarget as HTMLElement).closest(".timeline-step")) as
+        | HTMLElement
+        | null;
+    if (!bounds) return;
+    const rect = bounds.getBoundingClientRect();
     const startX = e.clientX;
     const origW = placementsRef.current[key].w;
 
@@ -419,7 +473,7 @@ export default function HowItWorks() {
       const dw = ((ev.clientX - startX) / rect.width) * 100;
       setPlacements((p) => ({
         ...p,
-        [key]: { ...p[key], w: clamp(origW + dw, 5, 80) },
+        [key]: { ...p[key], w: clamp(origW + dw, 5, 100) },
       }));
     };
     const up = () => {
@@ -432,9 +486,10 @@ export default function HowItWorks() {
 
   const copyJson = async () => {
     try {
-      await navigator.clipboard.writeText(
-        JSON.stringify(placements, null, 2)
+      const payload = Object.fromEntries(
+        PLACEMENT_KEYS.map((k) => [k, placements[k]])
       );
+      await navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {
@@ -533,6 +588,11 @@ export default function HowItWorks() {
 
       gsap.set(".timeline-flood-progress", { scaleY: 0, scaleX: 1, width: 6 });
       gsap.set(".timeline-flood-axis", { opacity: 1 });
+      gsap.set(".flood-hero3", { opacity: editMode ? 1 : 0 });
+      gsap.set(".flood-community", {
+        opacity: editMode ? 1 : 0,
+        y: editMode ? 0 : 36,
+      });
 
       ScrollTrigger.create({
         trigger: ".timeline-seed",
@@ -714,6 +774,29 @@ export default function HowItWorks() {
             header?.classList.add("nav-on-light");
           }
 
+          const hero3El = root.querySelector<HTMLElement>(".flood-hero3");
+          const communityEl = root.querySelector<HTMLElement>(".flood-community");
+          if (hero3El) {
+            if (editMode) {
+              hero3El.style.opacity = "1";
+            } else {
+              const reveal = Math.min(
+                Math.max((p - expandEnd) / 0.12, 0),
+                1
+              );
+              hero3El.style.opacity = String(reveal);
+            }
+          }
+
+          const contentReveal = editMode
+            ? 1
+            : Math.min(Math.max((p - expandEnd - 0.04) / 0.14, 0), 1);
+          const contentE = 1 - Math.pow(1 - contentReveal, 3);
+          if (communityEl) {
+            communityEl.style.opacity = String(contentE);
+            communityEl.style.transform = `translateY(${(1 - contentE) * 36}px)`;
+          }
+
           const lineP = Math.min(p / growEnd, 1);
           gsap.set(".timeline-flood-progress", { scaleY: lineP });
 
@@ -756,14 +839,16 @@ export default function HowItWorks() {
       });
     }, root);
 
-    return () => ctx.revert();
-  }, []);
+    return () => {
+      ctx.revert();
+    };
+  }, [editMode]);
 
   return (
     <section
       ref={rootRef}
       id="how-it-works"
-      className="relative bg-white text-black"
+      className="relative text-black"
     >
       <div className="how-intro relative h-[180vh] px-6">
         <div className="sticky top-0 flex h-screen items-center justify-center">
@@ -789,7 +874,7 @@ export default function HowItWorks() {
           <div className="sticky top-0 h-screen overflow-hidden">
             <div className="timeline-track relative mx-auto h-full max-w-5xl px-6">
               <div className="timeline-start absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2">
-                <div className="timeline-start-dot size-5 rounded-full border-2 border-white bg-gradient-to-br from-[#FF7F9B] to-[#D7A7FF] shadow-lg" />
+                <div className="timeline-start-dot size-5 rounded-full border-2 border-white bg-gradient-to-br from-[#FD9779] to-[#592AA8] shadow-lg" />
               </div>
 
               <div className="timeline-axis absolute bottom-0 left-1/2 top-1/2 z-0 w-1.5 -translate-x-1/2 rounded-full bg-black/15" />
@@ -797,7 +882,7 @@ export default function HowItWorks() {
                 className="timeline-progress absolute bottom-0 left-1/2 top-1/2 z-0 w-1.5 origin-top -translate-x-1/2 rounded-full"
                 style={{
                   background:
-                    "linear-gradient(180deg, #FF7F9B, #F89A9A, #D7A7FF)",
+                    "linear-gradient(180deg, #FD9779, #C74990, #592AA8)",
                 }}
               />
 
@@ -813,7 +898,7 @@ export default function HowItWorks() {
           <div
             className="timeline-leaf-progress absolute inset-y-0 left-1/2 z-0 w-1.5 origin-top -translate-x-1/2 rounded-full"
             style={{
-              background: "linear-gradient(180deg, #FF7F9B, #F89A9A, #D7A7FF)",
+              background: "linear-gradient(180deg, #FD9779, #C74990, #592AA8)",
             }}
           />
           {STEPS.slice(1).map((step, i) =>
@@ -824,13 +909,64 @@ export default function HowItWorks() {
         <div className="timeline-flood relative h-[200vh]">
           <div className="sticky top-0 h-screen overflow-hidden">
             <div className="timeline-flood-axis absolute inset-y-0 left-1/2 z-0 w-1.5 -translate-x-1/2 rounded-full bg-black/15" />
-            <div
-              className="timeline-flood-progress absolute inset-y-0 left-1/2 z-0 w-1.5 origin-top -translate-x-1/2 rounded-full"
+            <div className="timeline-flood-progress absolute inset-y-0 left-1/2 z-0 w-1.5 origin-top -translate-x-1/2 rounded-full"
               style={{
                 background:
-                  "linear-gradient(180deg, #FF7F9B, #F89A9A, #D7A7FF)",
+                  "linear-gradient(180deg, #FD9779, #C74990, #592AA8)",
               }}
             />
+
+            <div className="flood-hero3 pointer-events-none absolute inset-0 z-[1] opacity-0">
+              <Image
+                src="/hero 3.png"
+                alt=""
+                fill
+                priority
+                className="object-cover object-center"
+                sizes="100vw"
+              />
+            </div>
+
+            <div className="flood-community pointer-events-none absolute inset-0 z-[10] flex flex-col items-start justify-center px-6 opacity-0 text-left sm:px-12 md:px-20">
+              <div className="w-full max-w-4xl">
+                <p className="hero-eyebrow mb-4 text-xs font-medium uppercase tracking-[0.25em] text-white/60">
+                  different minds · different skills · one future
+                </p>
+
+                <h1
+                  className="hero-title font-semibold tracking-tight text-white"
+                  style={{ lineHeight: 1 }}
+                >
+                  <span className="hero-title-line block text-7xl sm:text-8xl md:text-9xl">
+                    Where Ideas
+                  </span>
+                  <span
+                    className="hero-title-line block bg-clip-text text-transparent text-7xl sm:text-8xl md:text-9xl"
+                    style={{
+                      backgroundImage:
+                        "linear-gradient(135deg, #FF7F9B, #F89A9A, #D7A7FF)",
+                      lineHeight: 1.25,
+                      paddingBottom: "0.15em",
+                      marginTop: "-0.28em",
+                      overflow: "visible",
+                    }}
+                  >
+                    Connect.
+                  </span>
+                </h1>
+
+                <p className="hero-sub mt-6 max-w-xl text-lg font-light text-white/75 sm:text-xl">
+                  Bring your perspective. Find people who think differently.
+                  Build something none of you could have built alone.
+                </p>
+
+                <div className="hero-cta pointer-events-auto mt-8">
+                  <button className="rounded-full bg-white px-8 py-3 text-sm font-semibold text-black transition-transform hover:scale-105">
+                    Explore the community →
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -851,14 +987,14 @@ export default function HowItWorks() {
           </div>
 
           <div className="mb-3 flex flex-wrap gap-1.5">
-            {PLACEMENT_KEYS.map((k) => (
+            {ILLUSTRATION_KEYS.map((k) => (
               <button
                 key={k}
                 type="button"
                 onClick={() => setSelected(k)}
                 className={`rounded-full px-2.5 py-1 text-[11px] capitalize transition ${
                   selected === k
-                    ? "bg-gradient-to-r from-[#FF7F9B] to-[#D7A7FF] text-white"
+                    ? "bg-gradient-to-r from-[#FD9779] to-[#592AA8] text-white"
                     : "bg-white/10 text-white/70 hover:bg-white/20"
                 }`}
               >
@@ -883,14 +1019,14 @@ export default function HowItWorks() {
                         ...p[selected],
                         [field]:
                           field === "w"
-                            ? clamp(v, 5, 80)
+                            ? clamp(v, 5, 100)
                             : field === "rot"
                               ? clamp(v, -180, 180)
                               : clamp(v, 0, 100),
                       },
                     }));
                   }}
-                  className="w-full rounded-md border border-white/10 bg-white/5 px-1.5 py-1 text-xs text-white outline-none focus:border-[#FF7F9B]"
+                  className="w-full rounded-md border border-white/10 bg-white/5 px-1.5 py-1 text-xs text-white outline-none focus:border-[#FD9779]"
                 />
               </label>
             ))}
@@ -899,13 +1035,13 @@ export default function HowItWorks() {
           <button
             type="button"
             onClick={copyJson}
-            className="mt-3 w-full rounded-lg bg-gradient-to-r from-[#FF7F9B] to-[#D7A7FF] py-2 text-xs font-semibold text-white transition hover:opacity-90"
+            className="mt-3 w-full rounded-lg bg-gradient-to-r from-[#FD9779] to-[#592AA8] py-2 text-xs font-semibold text-white transition hover:opacity-90"
           >
             {copied ? "Copied!" : "Copy JSON"}
           </button>
           <p className="mt-2 text-[10px] leading-relaxed text-white/40">
-            Drag image · corner handle to resize · press 5 to toggle
-          </p>
+              Drag image · corner handle to resize · press 5 to toggle
+            </p>
         </div>
       )}
     </section>
