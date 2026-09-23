@@ -2,6 +2,7 @@ import Hero from "./Hero";
 import Features from "./Features";
 import Showcase from "./Showcase";
 import HowItWorks from "./HowItWorks";
+import NextSection from "./NextSection";
 import FixedBackground from "./FixedBackground";
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
         <Features />
         <Showcase />
         <HowItWorks />
+        <NextSection />
       </main>
     </>
   );

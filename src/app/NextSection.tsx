@@ -1,15 +1,23 @@
 "use client";
 
+import Image from "next/image";
+
 export default function NextSection() {
   return (
     <section
       id="next"
-      className="relative flex min-h-screen items-center justify-center px-6 text-white"
-      style={{
-        background:
-          "linear-gradient(160deg, #FF7F9B 0%, #F89A9A 45%, #D7A7FF 100%)",
-      }}
+      className="relative flex min-h-screen flex-col items-center justify-center gap-16 px-6 py-24 text-white"
+      style={{ background: "#05050a" }}
     >
+      <Image
+        src="/transparentlogo.svg"
+        alt="Collivio logo"
+        width={1200}
+        height={400}
+        priority
+        className="h-auto w-[min(92vw,1100px)] object-contain"
+      />
+
       <div className="mx-auto max-w-3xl text-center">
         <p className="mb-4 text-xs font-medium uppercase tracking-[0.3em] text-white/75">
           ready when you are
