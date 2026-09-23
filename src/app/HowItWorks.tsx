@@ -253,10 +253,10 @@ function renderStep(
       </div>
 
       <div
-        className={`timeline-card relative z-10 w-full rounded-[20px] border border-white/60 bg-white/40 p-9 pl-14 pr-14 text-black shadow-[0_20px_50px_rgba(0,0,0,0.06)] backdrop-blur-xl sm:absolute sm:top-0 sm:bottom-0 sm:my-auto sm:h-fit sm:w-[calc(25vw+80px)] ${
+        className={`timeline-card relative z-10 w-full rounded-[20px] border border-white/60 bg-white/40 p-9 text-black shadow-[0_20px_50px_rgba(0,0,0,0.06)] backdrop-blur-xl sm:absolute sm:top-0 sm:bottom-0 sm:my-auto sm:h-fit sm:w-[calc(25vw+80px)] ${
           side === "left"
-            ? "sm:left-[calc(50%-25vw-200px)] sm:right-auto sm:pr-4"
-            : "sm:right-[calc(50%-25vw-200px)] sm:left-auto sm:pl-4"
+            ? "sm:left-[calc(50%-25vw-200px)] sm:right-auto"
+            : "sm:right-[calc(50%-25vw-200px)] sm:left-auto"
         }`}
         style={{
           background:
@@ -720,7 +720,7 @@ export default function HowItWorks() {
           if (p <= expandEnd) {
             const expand =
               p <= growEnd ? 0 : (p - growEnd) / (expandEnd - growEnd);
-            const e = expand <= 0 ? 0 : 1 - Math.pow(1 - expand, 3);
+            const e = expand <= 0 ? 0 : Math.pow(expand, 3);
             const w = 6 + (window.innerWidth - 6) * e;
             const bh = p <= growEnd ? "100%" : "100%";
 
