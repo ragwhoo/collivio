@@ -33,6 +33,40 @@ header.nav-on-light .nav-links a:hover {
   color: #000;
 }
 
+.nav-logo-dark {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.nav-logo-light {
+  transition: opacity 0.3s ease;
+}
+
+header.nav-on-light .nav-logo-dark {
+  opacity: 1;
+}
+
+header.nav-on-light .nav-logo-light {
+  opacity: 0;
+}
+
+.nav-cta-pill {
+  transition: transform 0.2s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+header.nav-on-light .nav-cta-pill {
+  background-color: #000;
+  color: #fff;
+}
+
+header.nav-on-light .nav-links a {
+  transition: color 0.3s ease;
+}
+
+.nav-links a {
+  transition: color 0.3s ease;
+}
+
 .how-char {
   will-change: transform, opacity, filter;
 }

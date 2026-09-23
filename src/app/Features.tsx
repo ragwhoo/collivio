@@ -86,11 +86,12 @@ export default function Features() {
           const dir = i === 0 ? -1 : i === 2 ? 1 : 0;
           split.fromTo(
             card,
-            { xPercent: 0, yPercent: 0, scale: 1 },
+            { xPercent: 0, yPercent: 0, scale: 1, rotation: 0 },
             {
-              xPercent: dir * 90,
-              yPercent: i === 1 ? -25 : 15,
-              scale: 1.7,
+              xPercent: dir * 80,
+              yPercent: -140,
+              scale: 1.4,
+              rotation: dir * 14,
               ease: "none",
             },
             0

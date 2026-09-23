@@ -310,14 +310,23 @@ export default function Hero() {
       </div>
 
       <header className="fixed left-0 right-0 -top-2 z-50 flex items-center justify-between px-6 pb-3 sm:px-8">
-        <Image
-          src="/logo.png"
-          alt="Collivio logo"
-          width={120}
-          height={40}
-          priority
-          className="nav-logo h-auto w-24 opacity-0 sm:w-28 md:w-32"
-        />
+        <div className="nav-logo relative h-auto w-24 opacity-0 sm:w-28 md:w-32">
+          <Image
+            src="/logo.png"
+            alt="Collivio logo"
+            width={120}
+            height={40}
+            priority
+            className="nav-logo-light h-auto w-full"
+          />
+          <Image
+            src="/logo dark.png"
+            alt="Collivio logo"
+            width={120}
+            height={40}
+            className="nav-logo-dark absolute inset-0 h-auto w-full"
+          />
+        </div>
         <nav className="nav-links absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-6 text-base font-medium text-white/80 sm:gap-8 sm:text-lg">
           <a href="#" className="nav-item opacity-0 transition-colors hover:text-white">
             Home
@@ -333,7 +342,7 @@ export default function Hero() {
           </a>
         </nav>
         <a href="#" className="nav-cta group relative opacity-0">
-          <span className="block rounded-full bg-white px-5 py-2 text-sm font-semibold text-black transition-transform duration-200 group-hover:scale-105">
+          <span className="nav-cta-pill block rounded-full bg-white px-5 py-2 text-sm font-semibold text-black transition-all duration-200 group-hover:scale-105">
             Get Started
           </span>
         </a>
