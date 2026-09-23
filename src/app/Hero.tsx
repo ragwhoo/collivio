@@ -80,7 +80,7 @@ export default function Hero() {
         .fromTo(
           ".nav-cta",
           { opacity: 0, y: -12 },
-          { opacity: 1, y: 0, duration: 0.5 },
+          { opacity: 1, y: 0, duration: 0.5, clearProps: "transform" },
           3.8
         )
         .fromTo(
@@ -332,11 +332,10 @@ export default function Hero() {
             Contact
           </a>
         </nav>
-        <a
-          href="#"
-          className="nav-cta rounded-full bg-white px-5 py-2 text-sm font-semibold text-black opacity-0 transition-transform hover:scale-105"
-        >
-          Get Started
+        <a href="#" className="nav-cta group relative opacity-0">
+          <span className="block rounded-full bg-white px-5 py-2 text-sm font-semibold text-black transition-transform duration-200 group-hover:scale-105">
+            Get Started
+          </span>
         </a>
       </header>
     </div>
