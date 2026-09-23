@@ -38,50 +38,50 @@ export default function Hero() {
         .fromTo(
           ".hero-globe-inner",
           { opacity: 0, filter: "blur(24px)" },
-          { opacity: 1, filter: "blur(0px)", duration: 1.6 },
+          { opacity: 1, filter: "blur(0px)", duration: 1.1 },
           0
         )
         .fromTo(
           ".hero-eyebrow",
           { opacity: 0, y: 16 },
-          { opacity: 1, y: 0, duration: 0.7 },
-          0.4
+          { opacity: 1, y: 0, duration: 0.5 },
+          0.25
         )
         .fromTo(
           ".hero-title-line",
           { opacity: 0, y: 40 },
-          { opacity: 1, y: 0, duration: 0.8, stagger: 0.35 },
-          0.9
+          { opacity: 1, y: 0, duration: 0.55, stagger: 0.22 },
+          0.55
         )
         .fromTo(
           ".hero-sub",
           { opacity: 0, y: 24 },
-          { opacity: 1, y: 0, duration: 0.8 },
-          2.0
+          { opacity: 1, y: 0, duration: 0.55 },
+          1.2
         )
         .fromTo(
           ".hero-cta",
           { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.7, stagger: 0.18 },
-          2.6
+          { opacity: 1, y: 0, duration: 0.5, stagger: 0.12 },
+          1.6
         )
         .fromTo(
           ".nav-logo",
           { opacity: 0, y: -16 },
-          { opacity: 1, y: 0, duration: 0.7 },
-          3.2
+          { opacity: 1, y: 0, duration: 0.5 },
+          2.0
         )
         .fromTo(
           ".nav-item",
           { opacity: 0, y: -12 },
-          { opacity: 1, y: 0, duration: 0.5, stagger: 0.08 },
-          3.4
+          { opacity: 1, y: 0, duration: 0.35, stagger: 0.05 },
+          2.15
         )
         .fromTo(
           ".nav-cta",
           { opacity: 0, y: -12 },
-          { opacity: 1, y: 0, duration: 0.5, clearProps: "transform" },
-          3.8
+          { opacity: 1, y: 0, duration: 0.35, clearProps: "transform" },
+          2.4
         )
         .fromTo(
           ".orbit",
@@ -89,10 +89,10 @@ export default function Hero() {
           {
             opacity: (i: number) => ORBIT_OPACITY[i],
             scale: 1,
-            duration: 1.4,
-            stagger: 0.15,
+            duration: 1.0,
+            stagger: 0.1,
           },
-          0.3
+          0.2
         )
         .fromTo(
           ".orbit-pill",
@@ -101,45 +101,45 @@ export default function Hero() {
             opacity: 1,
             scale: 1,
             rotation: 0,
-            duration: (i: number) => 1.3 + i * 0.35,
+            duration: (i: number) => 0.9 + i * 0.25,
             ease: "power2.out",
-            stagger: 0.08,
+            stagger: 0.06,
           },
-          1.0
+          0.7
         )
         .fromTo(
           ".orbit-ball",
           { opacity: 0, scale: 0 },
-          { opacity: 1, scale: 1, duration: 0.7, stagger: 0.1 },
-          1.3
+          { opacity: 1, scale: 1, duration: 0.5, stagger: 0.08 },
+          0.9
         )
         .fromTo(
           ".orbit-revolve-ball",
           { rotation: (i: number) => -40 - i * 25 },
           {
             rotation: 0,
-            duration: (i: number) => 1.2 + i * 0.3,
+            duration: (i: number) => 0.85 + i * 0.2,
             ease: "power2.out",
-            stagger: 0.08,
+            stagger: 0.06,
           },
-          1.0
+          0.7
         )
         .fromTo(
           ".orbit-revolve-pill",
           { rotation: (i: number) => -35 - i * 30 },
           {
             rotation: 0,
-            duration: (i: number) => 1.3 + i * 0.35,
+            duration: (i: number) => 0.9 + i * 0.25,
             ease: "power2.out",
-            stagger: 0.08,
+            stagger: 0.06,
           },
-          1.0
+          0.7
         )
         .fromTo(
           ".orbit-glow",
           { opacity: 0, scale: 0.5 },
-          { opacity: 1, scale: 1, duration: 1.4, ease: "power2.out" },
-          0.8
+          { opacity: 1, scale: 1, duration: 1.0, ease: "power2.out" },
+          0.55
         );
     }, root);
 
