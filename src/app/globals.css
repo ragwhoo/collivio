@@ -17,6 +17,11 @@ body {
   font-family: var(--font-poppins), Arial, Helvetica, sans-serif;
 }
 
+html,
+body {
+  overflow-x: clip;
+}
+
 html {
   scrollbar-width: none;
 }
