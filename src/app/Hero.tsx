@@ -153,22 +153,20 @@ export default function Hero() {
       className="relative h-screen w-full overflow-hidden"
     >
       <div
-        className="orbit-system absolute inset-0 flex items-center justify-center"
-        style={{
-          transform: `translate(${orbitX}px, ${orbitY}px) scale(${orbitZoom})`,
-        }}
+        className="absolute inset-0 z-[3]"
+        style={{ transform: "translate(75px, 20px)" }}
       >
-        <div
-          className="hero-globe-inner relative aspect-square w-full max-w-none opacity-0"
-          style={{ left: "50%", transform: "translateX(-50%)" }}
-        >
-          <Image
-            src="/hero-globe.png"
-            alt=""
-            fill
-            priority
-            className="object-contain"
-          />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="hero-globe-inner relative aspect-square w-full max-w-none opacity-0">
+            <Image
+              src="/hero-globe.png"
+              alt=""
+              fill
+              priority
+              className="object-contain"
+              sizes="100vw"
+            />
+          </div>
         </div>
       </div>
 
