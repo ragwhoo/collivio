@@ -10,8 +10,8 @@ export default function AuthLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white text-black py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md mx-auto w-full">
+    <div className="flex h-svh items-center justify-center overflow-hidden bg-gradient-to-b from-gray-50 to-white text-black px-4 sm:px-6">
+      <div className="w-full max-w-md">
         <div className="bg-white rounded-lg shadow-sm p-8 md:p-10">
           <div className="flex items-center justify-center mb-6">
             <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">

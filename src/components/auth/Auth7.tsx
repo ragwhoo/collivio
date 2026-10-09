@@ -58,13 +58,13 @@ export default function Auth7({ type }: { type?: AccountType }) {
 
   return (
     <div
-      className="flex min-h-screen w-full bg-white text-black antialiased selection:bg-black selection:text-white relative"
+      className="flex h-svh w-full overflow-hidden bg-white text-black antialiased selection:bg-black selection:text-white"
       style={{ fontFamily: "var(--font-poppins), Arial, Helvetica, sans-serif" }}
     >
       {/* Left Form Section */}
-      <div className="flex w-full flex-col lg:w-1/2">
+      <div className="flex w-full min-w-0 flex-col lg:w-1/2">
         {/* Header Branding */}
-        <div className="p-6 md:p-10 absolute md:top-4 md:left-4 top-2 left-2">
+        <div className="px-6 pt-6 md:px-10 md:pt-8">
           <Link href="/" aria-label="Collivio home" className="block">
             <Image
               src="/logo dark.png"
@@ -77,13 +77,13 @@ export default function Auth7({ type }: { type?: AccountType }) {
           </Link>
         </div>
 
-        {/* Form Container */}
-        <div className="flex flex-1 items-center justify-center p-6 md:p-10 mt-4 md:mt-8">
+        {/* Form Container — one fullscreen section, page never scrolls */}
+        <div className="flex flex-1 justify-center overflow-y-auto px-6 py-8 md:px-10">
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="w-full max-w-[420px]"
+            className="my-auto w-full max-w-[420px]"
           >
             {/* Titles */}
             <motion.div variants={itemVariants} className="mb-6 text-center">
@@ -224,7 +224,7 @@ export default function Auth7({ type }: { type?: AccountType }) {
       </div>
 
       {/* Right Image Section */}
-      <div className="hidden lg:block lg:w-1/2 p-4">
+      <div className="hidden lg:block w-1/2 p-4">
         <div className="relative h-full w-full overflow-hidden rounded-[2rem]">
           <img
             src="https://assets.watermelon.sh/auth-7.avif"
