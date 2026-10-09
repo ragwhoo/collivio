@@ -331,7 +331,7 @@ function renderStep(
           style={{
             left: `${illu.x}%`,
             top: `${illu.y}%`,
-            width: `${illu.w}%`,
+            width: `calc(${illu.w}% * var(--timeline-illu-k, 1))`,
             transform: `translate(-50%, -50%) rotate(${illu.rot}deg)`,
             pointerEvents: edit?.editMode ? "auto" : "none",
             cursor: edit?.editMode ? "move" : undefined,
@@ -942,11 +942,11 @@ export default function HowItWorks() {
                   className="hero-title font-semibold tracking-tight text-white"
                   style={{ lineHeight: 1 }}
                 >
-                  <span className="hero-title-line block text-7xl sm:text-8xl md:text-9xl">
+                  <span className="hero-title-line block text-[clamp(3rem,min(calc(6.67vw_+_16px),calc(12.5vh_+_16px)),8rem)]">
                     Where Ideas
                   </span>
                   <span
-                    className="hero-title-line block bg-clip-text text-transparent text-7xl sm:text-8xl md:text-9xl"
+                    className="hero-title-line block bg-clip-text text-transparent text-[clamp(3rem,min(calc(6.67vw_+_16px),calc(12.5vh_+_16px)),8rem)]"
                     style={{
                       backgroundImage:
                         "linear-gradient(135deg, #FF7F9B, #F89A9A, #D7A7FF)",
@@ -960,7 +960,7 @@ export default function HowItWorks() {
                   </span>
                 </h1>
 
-                <p className="hero-sub mt-6 max-w-xl text-lg font-light text-white/75 sm:text-xl">
+                <p className="hero-sub mt-6 max-w-xl text-[clamp(1rem,1.04vw,1.25rem)] font-light text-white/75">
                   Bring your perspective. Find people who think differently.
                   Build something none of you could have built alone.
                 </p>

@@ -83,3 +83,13 @@ header.nav-on-light .nav-links a {
   color: transparent;
   -webkit-text-fill-color: transparent;
 }
+
+/* Timeline illustrations read oversized on ~1366px laptops (track stays
+   max-w-5xl wide, so they hold the same pixels as on 1920). Shrink them
+   within the 1280-1535 range only; other widths keep k=1 (identical to
+   the original percentage sizing). */
+@media (min-width: 1280px) and (max-width: 1535px) {
+  .timeline-illu {
+    --timeline-illu-k: 0.85;
+  }
+}

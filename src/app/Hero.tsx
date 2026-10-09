@@ -271,11 +271,11 @@ export default function Hero() {
           className="hero-title font-semibold tracking-tight text-white"
           style={{ lineHeight: 1 }}
         >
-          <span className="hero-title-line block text-[clamp(3rem,min(calc(6.67vw_+_10px),calc(12.5vh_+_10px)),8rem)] opacity-0">
+          <span className="hero-title-line block text-[clamp(3rem,min(calc(6.67vw_+_16px),calc(12.5vh_+_16px)),8rem)] opacity-0">
             Tomorrow,
           </span>
           <span
-            className="hero-title-line block bg-clip-text text-transparent text-[clamp(3rem,min(calc(6.67vw_+_10px),calc(12.5vh_+_10px)),8rem)] opacity-0"
+            className="hero-title-line block bg-clip-text text-transparent text-[clamp(3rem,min(calc(6.67vw_+_16px),calc(12.5vh_+_16px)),8rem)] opacity-0"
             style={{
               backgroundImage:
                 "linear-gradient(135deg, #FF7F9B, #F89A9A, #D7A7FF)",
