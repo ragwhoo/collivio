@@ -10,9 +10,9 @@ export default function AuthLoginPage() {
   };
 
   return (
-    <div className="flex h-svh items-center justify-center overflow-hidden bg-gradient-to-b from-gray-50 to-white text-black px-4 sm:px-6">
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-lg shadow-sm p-8 md:p-10">
+    <div className="flex h-svh justify-center overflow-hidden bg-gradient-to-b from-gray-50 to-white text-black px-4 sm:px-6">
+      <div className="my-auto w-full max-w-md">
+        <div className="bg-white rounded-lg shadow-sm p-6 sm:p-8 md:p-10">
           <div className="flex items-center justify-center mb-6">
             <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
               <svg className="w-6 h-6 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -26,7 +26,7 @@ export default function AuthLoginPage() {
             </div>
           </div>
           
-          <h2 className="text-2xl font-semibold tracking-tight text-center mb-4">Welcome Back!</h2>
+          <h2 className="text-xl font-semibold tracking-tight text-center mb-4 sm:text-2xl">Welcome Back!</h2>
           <p className="text-center text-sm font-light text-black mb-8">Please select your account type to continue</p>
           
           <div className="space-y-3 mb-8">

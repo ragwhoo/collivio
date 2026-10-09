@@ -64,7 +64,7 @@ export default function Auth7({ type }: { type?: AccountType }) {
       {/* Left Form Section */}
       <div className="flex w-full min-w-0 flex-col lg:w-1/2">
         {/* Header Branding */}
-        <div className="px-6 pt-6 md:px-10 md:pt-8">
+        <div className="px-4 pt-4 sm:px-6 sm:pt-6 md:px-10 md:pt-8">
           <Link href="/" aria-label="Collivio home" className="block">
             <Image
               src="/logo dark.png"
@@ -72,13 +72,13 @@ export default function Auth7({ type }: { type?: AccountType }) {
               width={120}
               height={40}
               priority
-              className="h-auto w-24 sm:w-28 md:w-32"
+              className="h-auto w-16 sm:w-20 md:w-24"
             />
           </Link>
         </div>
 
         {/* Form Container — one fullscreen section, page never scrolls */}
-        <div className="flex flex-1 justify-center overflow-y-auto px-6 py-8 md:px-10">
+        <div className="flex flex-1 justify-center overflow-y-auto px-4 py-4 sm:px-6 sm:py-6 md:px-10 md:py-8 [@media(max-height:820px)]:py-2">
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -86,8 +86,8 @@ export default function Auth7({ type }: { type?: AccountType }) {
             className="my-auto w-full max-w-[420px]"
           >
             {/* Titles */}
-            <motion.div variants={itemVariants} className="mb-6 text-center">
-              <h1 className="mb-1 text-3xl font-semibold tracking-tight text-black md:text-4xl">
+            <motion.div variants={itemVariants} className="mb-4 text-center sm:mb-6 [@media(max-height:820px)]:mb-3">
+              <h1 className="mb-1 text-2xl font-semibold tracking-tight text-black sm:text-3xl md:text-4xl [@media(max-height:820px)]:text-2xl">
                 {typeLabel ? `Create your ${typeLabel} Account` : "Create your Account"}
               </h1>
               <p className="text-sm text-black">
@@ -96,7 +96,7 @@ export default function Auth7({ type }: { type?: AccountType }) {
             </motion.div>
 
             {/* Google Login Button */}
-            <motion.div variants={itemVariants} className="mb-4">
+            <motion.div variants={itemVariants} className="mb-3 sm:mb-4 [@media(max-height:820px)]:mb-2">
               <button
                 type="button"
                 className="flex w-full items-center justify-center gap-3 rounded-full border border-neutral-200 bg-white px-6 py-3 text-sm font-medium text-black transition-colors hover:bg-neutral-50 active:bg-neutral-100"
@@ -109,7 +109,7 @@ export default function Auth7({ type }: { type?: AccountType }) {
             {/* Divider */}
             <motion.div
               variants={itemVariants}
-              className="relative mb-6 flex items-center"
+              className="relative mb-4 flex items-center sm:mb-6 [@media(max-height:820px)]:mb-3"
             >
               <div className="grow border-t border-neutral-200"></div>
               <span className="px-4 text-sm text-black">or</span>
@@ -117,7 +117,7 @@ export default function Auth7({ type }: { type?: AccountType }) {
             </motion.div>
 
             {/* Form */}
-            <form className="flex flex-col gap-4">
+            <form className="flex flex-col gap-3 sm:gap-4 [@media(max-height:820px)]:gap-2">
               <input type="hidden" name="accountType" value={type ?? ""} />
 
               <motion.div
@@ -135,7 +135,7 @@ export default function Auth7({ type }: { type?: AccountType }) {
                   name="name"
                   type="text"
                   placeholder="Enter your name"
-                  className="w-full rounded-full border border-neutral-200 bg-white px-5 py-3 text-sm text-black placeholder:text-neutral-300 focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900"
+                  className="w-full rounded-full border border-neutral-200 bg-white px-5 py-2.5 text-sm text-black placeholder:text-neutral-300 focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900 sm:py-3"
                 />
               </motion.div>
 
@@ -154,7 +154,7 @@ export default function Auth7({ type }: { type?: AccountType }) {
                   name="email"
                   type="email"
                   placeholder="Enter your email"
-                  className="w-full rounded-full border border-neutral-200 bg-white px-5 py-3 text-sm text-black placeholder:text-neutral-300 focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900"
+                  className="w-full rounded-full border border-neutral-200 bg-white px-5 py-2.5 text-sm text-black placeholder:text-neutral-300 focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900 sm:py-3"
                 />
               </motion.div>
 
@@ -173,7 +173,7 @@ export default function Auth7({ type }: { type?: AccountType }) {
                   name="password"
                   type="password"
                   placeholder="Enter your password"
-                  className="w-full rounded-full border border-neutral-200 bg-white px-5 py-3 text-sm text-black placeholder:text-neutral-300 focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900"
+                  className="w-full rounded-full border border-neutral-200 bg-white px-5 py-2.5 text-sm text-black placeholder:text-neutral-300 focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900 sm:py-3"
                 />
               </motion.div>
 
@@ -209,7 +209,7 @@ export default function Auth7({ type }: { type?: AccountType }) {
             {/* Footer */}
             <motion.div
               variants={itemVariants}
-              className="mt-5 text-sm text-black"
+              className="mt-4 text-sm text-black sm:mt-5 [@media(max-height:820px)]:mt-2"
             >
               Already have an account?{" "}
               <a
