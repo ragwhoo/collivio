@@ -226,11 +226,25 @@ export default function Auth7({ type }: { type?: AccountType }) {
       {/* Right Image Section */}
       <div className="hidden lg:block w-1/2 p-4">
         <div className="relative h-full w-full overflow-hidden rounded-[2rem]">
-          <img
-            src="https://assets.watermelon.sh/auth-7.avif"
-            alt="Cloudscape background"
-            className="h-full w-full object-cover"
+          <Image
+            src="/ayth photo.png"
+            alt="Students collaborating around a digital globe"
+            fill
+            priority
+            sizes="(min-width: 1024px) 50vw, 0px"
+            className="object-cover"
           />
+          {/* Brand logo overlay — white script over the dark sky */}
+          <div className="absolute inset-x-0 top-5 flex justify-center md:top-7">
+            <Image
+              src="/loooogo.png"
+              alt="Collivio logo"
+              width={384}
+              height={384}
+              priority
+              className="h-auto w-40 xl:w-48"
+            />
+          </div>
         </div>
       </div>
     </div>
