@@ -310,7 +310,7 @@ export default function Hero() {
       </div>
 
       <header className="fixed left-0 right-0 -top-2 z-50 flex items-center justify-between px-[clamp(1.25rem,1.67vw,2rem)] pb-3">
-        <div className="nav-logo relative h-auto w-24 opacity-0 sm:w-28 md:w-32 2xl:-ml-5">
+        <div className="nav-logo relative h-auto w-24 opacity-0 sm:w-28 md:w-32">
           <Image
             src="/logo.png"
             alt="Collivio logo"
