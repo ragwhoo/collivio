@@ -263,7 +263,7 @@ export default function Hero() {
       </div>
 
       <div
-        className="absolute inset-0 z-10 flex flex-col items-start justify-end px-[clamp(1.5rem,4.17vw,5rem)] pb-[clamp(3rem,8.9vh,6rem)] text-left xl:max-2xl:justify-center xl:max-2xl:pb-0"
+        className="absolute inset-0 z-10 flex flex-col items-start justify-end px-[clamp(1.5rem,4.17vw,5rem)] pb-[clamp(3rem,8.9vh,6rem)] text-left xl:max-2xl:justify-center xl:max-2xl:pb-0 2xl:pb-4"
       >
         <p className="hero-eyebrow mb-[clamp(0.5rem,0.83vw,1rem)] text-xs font-medium uppercase tracking-[0.25em] text-white/60 opacity-0">
           students   ·   projects   ·   experience
