@@ -151,11 +151,7 @@ export default function Hero() {
       className="relative h-[100svh] w-full overflow-hidden"
     >
       <div
-<<<<<<< HEAD
 className="absolute inset-0 z-[3] translate-x-[75px] translate-y-[20px] 2xl:translate-x-[31px] 2xl:translate-y-[27px]"
-=======
-        className="absolute inset-0 z-[3] translate-x-[75px] translate-y-[20px] 2xl:translate-x-[30px] 2xl:translate-y-[27px]"
->>>>>>> backend
       >
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="hero-globe-inner relative aspect-square w-full max-w-none opacity-0">
@@ -267,11 +263,7 @@ className="absolute inset-0 z-[3] translate-x-[75px] translate-y-[20px] 2xl:tran
       </div>
 
       <div
-<<<<<<< HEAD
 className="absolute inset-0 z-10 flex flex-col items-start justify-end px-[clamp(1.5rem,4.17vw,5rem)] pb-[clamp(3rem,8.9vh,6rem)] text-left xl:max-2xl:justify-center xl:max-2xl:pb-0 2xl:-translate-y-24"
-=======
-        className="absolute inset-0 z-10 flex flex-col items-start justify-end px-[clamp(1.5rem,4.17vw,5rem)] pb-[clamp(3rem,8.9vh,6rem)] text-left xl:max-2xl:justify-center xl:max-2xl:pb-0 2xl:-translate-y-24"
->>>>>>> backend
       >
         <p className="hero-eyebrow mb-[clamp(0.5rem,0.83vw,1rem)] text-xs font-medium uppercase tracking-[0.25em] text-white/60 opacity-0">
           students   ·   projects   ·   experience
