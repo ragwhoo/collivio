@@ -1,7 +1,5 @@
 "use client";
 
-import auth from "@/lib/auth";
-
 export default function AuthLoginPage() {
   const handleStudentLogin = () => {
     window.location.href = "/auth/signup?type=student";
@@ -12,7 +10,7 @@ export default function AuthLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white text-black py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md mx-auto w-full">
         <div className="bg-white rounded-lg shadow-sm p-8 md:p-10">
           <div className="flex items-center justify-center mb-6">
@@ -28,8 +26,8 @@ export default function AuthLoginPage() {
             </div>
           </div>
           
-          <h2 className="text-xl font-bold text-center mb-4">Welcome Back!</h2>
-          <p className="text-center text-sm text-gray-600 mb-8">Please select your account type to continue</p>
+          <h2 className="text-2xl font-semibold tracking-tight text-center mb-4">Welcome Back!</h2>
+          <p className="text-center text-sm font-light text-black mb-8">Please select your account type to continue</p>
           
           <div className="space-y-3 mb-8">
             {/* Student Login Button */}
@@ -59,9 +57,9 @@ export default function AuthLoginPage() {
             </button>
           </div>
           
-          <div className="text-center text-sm text-gray-500">
-            <p>Don't have an account?</p>
-            <a href="/signup" className="font-medium text-primary hover:underline">
+          <div className="text-center text-sm text-black">
+            <p>Don&apos;t have an account?</p>
+            <a href="/auth/signup" className="font-semibold text-black hover:underline">
               Create account
             </a>
           </div>

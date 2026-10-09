@@ -55,7 +55,10 @@ export default function Auth7({ type }: { type?: AccountType }) {
   };
 
   return (
-    <div className="flex min-h-screen w-full bg-white font-sans text-neutral-950 antialiased selection:bg-neutral-900 selection:text-white relative">
+    <div
+      className="flex min-h-screen w-full bg-white text-black antialiased selection:bg-black selection:text-white relative"
+      style={{ fontFamily: "var(--font-poppins), Arial, Helvetica, sans-serif" }}
+    >
       {/* Left Form Section */}
       <div className="flex w-full flex-col lg:w-1/2">
         {/* Header Branding */}
@@ -73,10 +76,10 @@ export default function Auth7({ type }: { type?: AccountType }) {
           >
             {/* Titles */}
             <motion.div variants={itemVariants} className="mb-6 text-center">
-              <h1 className="mb-1 text-3xl font-semibold tracking-tight text-neutral-900 md:text-4xl">
+              <h1 className="mb-1 text-3xl font-semibold tracking-tight text-black md:text-4xl">
                 {typeLabel ? `Create your ${typeLabel} Account` : "Create your Account"}
               </h1>
-              <p className="text-sm text-neutral-500">
+              <p className="text-sm text-black">
                 Let&apos;s get started with your 30 days free trial
               </p>
             </motion.div>
@@ -85,7 +88,7 @@ export default function Auth7({ type }: { type?: AccountType }) {
             <motion.div variants={itemVariants} className="mb-4">
               <button
                 type="button"
-                className="flex w-full items-center justify-center gap-3 rounded-full border border-neutral-200 bg-white px-6 py-3 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-50 active:bg-neutral-100"
+                className="flex w-full items-center justify-center gap-3 rounded-full border border-neutral-200 bg-white px-6 py-3 text-sm font-medium text-black transition-colors hover:bg-neutral-50 active:bg-neutral-100"
               >
                 <GoogleIcon className="text-lg" />
                 Login with Google
@@ -98,7 +101,7 @@ export default function Auth7({ type }: { type?: AccountType }) {
               className="relative mb-6 flex items-center"
             >
               <div className="grow border-t border-neutral-200"></div>
-              <span className="px-4 text-sm text-neutral-400">or</span>
+              <span className="px-4 text-sm text-black">or</span>
               <div className="grow border-t border-neutral-200"></div>
             </motion.div>
 
@@ -112,7 +115,7 @@ export default function Auth7({ type }: { type?: AccountType }) {
               >
                 <label
                   htmlFor="name"
-                  className="text-sm font-medium text-neutral-800"
+                  className="text-sm font-medium text-black"
                 >
                   Name
                 </label>
@@ -121,7 +124,7 @@ export default function Auth7({ type }: { type?: AccountType }) {
                   name="name"
                   type="text"
                   placeholder="Enter your name"
-                  className="w-full rounded-full border border-neutral-200 bg-white px-5 py-3 text-sm text-neutral-900 placeholder:text-neutral-300 focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900"
+                  className="w-full rounded-full border border-neutral-200 bg-white px-5 py-3 text-sm text-black placeholder:text-neutral-300 focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900"
                 />
               </motion.div>
 
@@ -131,7 +134,7 @@ export default function Auth7({ type }: { type?: AccountType }) {
               >
                 <label
                   htmlFor="email"
-                  className="text-sm font-medium text-neutral-800"
+                  className="text-sm font-medium text-black"
                 >
                   Email
                 </label>
@@ -140,7 +143,7 @@ export default function Auth7({ type }: { type?: AccountType }) {
                   name="email"
                   type="email"
                   placeholder="Enter your email"
-                  className="w-full rounded-full border border-neutral-200 bg-white px-5 py-3 text-sm text-neutral-900 placeholder:text-neutral-300 focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900"
+                  className="w-full rounded-full border border-neutral-200 bg-white px-5 py-3 text-sm text-black placeholder:text-neutral-300 focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900"
                 />
               </motion.div>
 
@@ -150,7 +153,7 @@ export default function Auth7({ type }: { type?: AccountType }) {
               >
                 <label
                   htmlFor="password"
-                  className="text-sm font-medium text-neutral-800"
+                  className="text-sm font-medium text-black"
                 >
                   Password
                 </label>
@@ -159,7 +162,7 @@ export default function Auth7({ type }: { type?: AccountType }) {
                   name="password"
                   type="password"
                   placeholder="Enter your password"
-                  className="w-full rounded-full border border-neutral-200 bg-white px-5 py-3 text-sm text-neutral-900 placeholder:text-neutral-300 focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900"
+                  className="w-full rounded-full border border-neutral-200 bg-white px-5 py-3 text-sm text-black placeholder:text-neutral-300 focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900"
                 />
               </motion.div>
 
@@ -173,10 +176,10 @@ export default function Auth7({ type }: { type?: AccountType }) {
                     id="terms"
                     name="terms"
                     type="checkbox"
-                    className="h-4 w-4 rounded border-neutral-300 text-neutral-900 focus:ring-neutral-900"
+                    className="h-4 w-4 rounded border-neutral-300 text-black focus:ring-neutral-900"
                   />
                 </div>
-                <label htmlFor="terms" className="text-sm text-neutral-600">
+                <label htmlFor="terms" className="text-sm text-black">
                   I agree to all Terms, Privacy Policy and Fees
                 </label>
               </motion.div>
@@ -185,7 +188,7 @@ export default function Auth7({ type }: { type?: AccountType }) {
               <motion.div variants={itemVariants} className="mt-1">
                 <button
                   type="submit"
-                  className="w-full rounded-full bg-linear-to-b from-[#3a3a3a] to-[#121212] px-6 py-3.5 text-sm font-medium text-white shadow-sm transition-all hover:opacity-90 active:scale-[0.98]"
+                  className="w-full rounded-full bg-black px-6 py-3.5 text-sm font-medium text-white shadow-sm transition-all hover:opacity-90 active:scale-[0.98]"
                 >
                   Sign Up
                 </button>
@@ -195,12 +198,12 @@ export default function Auth7({ type }: { type?: AccountType }) {
             {/* Footer */}
             <motion.div
               variants={itemVariants}
-              className="mt-5 text-sm text-neutral-500"
+              className="mt-5 text-sm text-black"
             >
               Already have an account?{" "}
               <a
                 href="/auth"
-                className="font-semibold text-neutral-900 hover:underline"
+                className="font-semibold text-black hover:underline"
               >
                 Log in
               </a>
