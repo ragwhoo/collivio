@@ -77,8 +77,8 @@ export default function Auth7({ type }: { type?: AccountType }) {
           </Link>
         </div>
 
-        {/* Form Container — one fullscreen section, page never scrolls */}
-        <div className="flex flex-1 justify-center overflow-y-auto px-4 py-4 sm:px-6 sm:py-6 md:px-10 md:py-8 [@media(max-height:820px)]:py-2">
+        {/* Form Container — one fullscreen section, page never scrolls (scrollbar hidden) */}
+        <div className="no-scrollbar flex flex-1 justify-center overflow-y-auto px-4 py-4 sm:px-6 sm:py-6 md:px-10 md:py-8 [@media(max-height:820px)]:py-2">
           <motion.div
             variants={containerVariants}
             initial="hidden"

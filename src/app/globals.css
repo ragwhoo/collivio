@@ -36,6 +36,25 @@ html::-webkit-scrollbar {
   display: none;
 }
 
+body {
+  scrollbar-width: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbars on scrollable containers (e.g. auth form) while
+   keeping the scroll behavior itself. */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 header.nav-on-light .nav-links {
   color: rgba(0, 0, 0, 0.8);
 }
