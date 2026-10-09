@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
 import { motion, type Variants } from "motion/react";
 
 // Simple Google SVG Icon
@@ -63,7 +65,16 @@ export default function Auth7({ type }: { type?: AccountType }) {
       <div className="flex w-full flex-col lg:w-1/2">
         {/* Header Branding */}
         <div className="p-6 md:p-10 absolute md:top-4 md:left-4 top-2 left-2">
-          <span className="text-lg md:text-xl lg:text-2xl font-bold tracking-tight">COLLIVIO</span>
+          <Link href="/" aria-label="Collivio home" className="block">
+            <Image
+              src="/logo dark.png"
+              alt="Collivio logo"
+              width={120}
+              height={40}
+              priority
+              className="h-auto w-24 sm:w-28 md:w-32"
+            />
+          </Link>
         </div>
 
         {/* Form Container */}
