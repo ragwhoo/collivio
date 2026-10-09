@@ -63,8 +63,8 @@ export default function Auth7({ type }: { type?: AccountType }) {
     >
       {/* Left Form Section */}
       <div className="flex w-full min-w-0 flex-col lg:w-1/2">
-        {/* Header Branding */}
-        <div className="px-4 pt-4 sm:px-6 sm:pt-6 md:px-10 md:pt-8">
+        {/* Header Branding — negative margins cancel the logo's 38% transparent top padding */}
+        <div className="px-4 pt-4 sm:px-6 sm:pt-5 md:px-10 md:pt-6">
           <Link href="/" aria-label="Collivio home" className="block">
             <Image
               src="/logo dark.png"
@@ -72,7 +72,7 @@ export default function Auth7({ type }: { type?: AccountType }) {
               width={120}
               height={40}
               priority
-              className="h-auto w-16 sm:w-20 md:w-24"
+              className="-mt-6 h-auto w-16 sm:-mt-7 sm:w-20 md:-mt-9 md:w-24"
             />
           </Link>
         </div>
