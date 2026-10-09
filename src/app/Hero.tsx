@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { Hammer, Users, TrendingUp, Sprout } from "lucide-react";
 import Avatar21 from "@/components/avatar21";
@@ -24,9 +24,6 @@ const ORBIT_BALLS = [
 
 export default function Hero() {
   const rootRef = useRef<HTMLDivElement>(null);
-  const [orbitX] = useState(413);
-  const [orbitY] = useState(0);
-  const [orbitZoom] = useState(0.74);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -150,11 +147,10 @@ export default function Hero() {
     <>
     <div
       ref={rootRef}
-      className="relative h-screen w-full overflow-hidden"
+      className="relative h-[100svh] w-full overflow-hidden"
     >
       <div
-        className="absolute inset-0 z-[3]"
-        style={{ transform: "translate(75px, 20px)" }}
+        className="absolute inset-0 z-[3] translate-x-[75px] translate-y-[20px]"
       >
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="hero-globe-inner relative aspect-square w-full max-w-none opacity-0">
@@ -171,10 +167,7 @@ export default function Hero() {
       </div>
 
       <div
-        className="pointer-events-none absolute inset-0 z-[1]"
-        style={{
-          transform: `translate(${orbitX}px, ${orbitY}px) scale(${orbitZoom})`,
-        }}
+        className="pointer-events-none absolute inset-0 z-[1] translate-x-[21.51vw] scale-[0.74] xl:max-2xl:translate-x-[calc(21.51vw_+_80px)]"
       >
         <div className="orbit-system absolute inset-0 flex items-center justify-center">
           <div
@@ -239,7 +232,7 @@ export default function Hero() {
             return (
               <div
                 key={label}
-                className="orbit-revolve-pill absolute inset-0"
+                className="orbit-revolve-pill absolute inset-0 portrait:hidden"
               >
                 <div
                   className="absolute"
@@ -250,11 +243,14 @@ export default function Hero() {
                   }}
                 >
                   <div
-                    className="orbit-pill flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 backdrop-blur-md"
+                    className="orbit-pill flex items-center gap-[clamp(0.375rem,0.42vw,0.5rem)] rounded-full border border-white/25 bg-white/10 px-[clamp(0.5rem,0.83vw,1rem)] py-[clamp(0.25rem,0.42vw,0.5rem)] backdrop-blur-md"
                     style={{ boxShadow: "0 8px 32px rgba(0,0,0,0.25)" }}
                   >
-                    <Icon className="size-4 shrink-0 text-white/90" strokeWidth={2} />
-                    <span className="whitespace-nowrap text-xs font-medium text-white sm:text-sm">
+                    <Icon
+                      className="size-[clamp(0.75rem,0.83vw,1rem)] shrink-0 text-white/90"
+                      strokeWidth={2}
+                    />
+                    <span className="whitespace-nowrap text-[clamp(0.6875rem,0.73vw,0.875rem)] font-medium text-white">
                       {label}
                     </span>
                   </div>
@@ -266,20 +262,20 @@ export default function Hero() {
       </div>
 
       <div
-        className="absolute inset-0 z-10 flex flex-col items-start justify-end px-6 pb-24 text-left sm:px-12 md:px-20"
+        className="absolute inset-0 z-10 flex flex-col items-start justify-end px-[clamp(1.5rem,4.17vw,5rem)] pb-[clamp(3rem,8.9vh,6rem)] text-left xl:max-2xl:justify-center xl:max-2xl:pb-0"
       >
-        <p className="hero-eyebrow mb-4 text-xs font-medium uppercase tracking-[0.25em] text-white/60 opacity-0">
+        <p className="hero-eyebrow mb-[clamp(0.5rem,0.83vw,1rem)] text-xs font-medium uppercase tracking-[0.25em] text-white/60 opacity-0">
           students   ·   projects   ·   experience
         </p>
         <h1
           className="hero-title font-semibold tracking-tight text-white"
           style={{ lineHeight: 1 }}
         >
-          <span className="hero-title-line block text-7xl opacity-0 sm:text-8xl md:text-9xl">
+          <span className="hero-title-line block text-[clamp(3rem,min(calc(6.67vw_+_10px),calc(12.5vh_+_10px)),8rem)] opacity-0">
             Tomorrow,
           </span>
           <span
-            className="hero-title-line block bg-clip-text text-transparent text-7xl opacity-0 sm:text-8xl md:text-9xl"
+            className="hero-title-line block bg-clip-text text-transparent text-[clamp(3rem,min(calc(6.67vw_+_10px),calc(12.5vh_+_10px)),8rem)] opacity-0"
             style={{
               backgroundImage:
                 "linear-gradient(135deg, #FF7F9B, #F89A9A, #D7A7FF)",
@@ -292,11 +288,11 @@ export default function Hero() {
             Together.
           </span>
         </h1>
-        <p className="hero-sub mt-3 max-w-xl text-lg font-light text-white/75 opacity-0 sm:text-xl">
+        <p className="hero-sub mt-[clamp(0.5rem,0.63vw,0.75rem)] max-w-xl text-[clamp(1rem,1.04vw,1.25rem)] font-light text-white/75 opacity-0">
           Join a community of students building their future, one project at a
           time.
         </p>
-        <div className="hero-cta mt-8 flex flex-col gap-4 opacity-0 sm:flex-row">
+        <div className="hero-cta mt-[clamp(1.25rem,1.67vw,2rem)] flex flex-col gap-4 opacity-0 sm:flex-row">
           <button className="rounded-full bg-white px-8 py-3 text-sm font-semibold text-black transition-transform hover:scale-105">
             Get Started
           </button>
@@ -304,12 +300,12 @@ export default function Hero() {
             Learn More
           </button>
         </div>
-        <div className="hero-cta mt-6 opacity-0">
+        <div className="hero-cta mt-[clamp(1rem,1.25vw,1.5rem)] opacity-0">
           <Avatar21 />
         </div>
       </div>
 
-      <header className="fixed left-0 right-0 -top-2 z-50 flex items-center justify-between px-6 pb-3 sm:px-8">
+      <header className="fixed left-0 right-0 -top-2 z-50 flex items-center justify-between px-[clamp(1.25rem,1.67vw,2rem)] pb-3">
         <div className="nav-logo relative h-auto w-24 opacity-0 sm:w-28 md:w-32">
           <Image
             src="/logo.png"
@@ -327,7 +323,7 @@ export default function Hero() {
             className="nav-logo-dark absolute inset-0 h-auto w-full"
           />
         </div>
-        <nav className="nav-links absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-6 text-base font-medium text-white/80 sm:gap-8 sm:text-lg">
+        <nav className="nav-links absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-6 text-base font-medium text-white/80 sm:flex sm:gap-8 sm:text-lg">
           <a href="#" className="nav-item opacity-0 transition-colors hover:text-white">
             Home
           </a>

@@ -66,7 +66,17 @@ export default function FixedBackground() {
       },
     });
 
+    // Re-evaluate progress-driven values after a resize/fullscreen toggle.
+    let resizeRaf = 0;
+    const onResize = () => {
+      cancelAnimationFrame(resizeRaf);
+      resizeRaf = requestAnimationFrame(() => ScrollTrigger.update());
+    };
+    window.addEventListener("resize", onResize);
+
     return () => {
+      window.removeEventListener("resize", onResize);
+      cancelAnimationFrame(resizeRaf);
       intro.kill();
       stWhite.kill();
     };

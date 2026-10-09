@@ -1,4 +1,5 @@
 import * as React from "react";
+import Image from "next/image";
 
 function Avatar({
   className,
@@ -14,12 +15,20 @@ function Avatar({
 
 function AvatarImage({
   className,
-  ...props
-}: React.ImgHTMLAttributes<HTMLImageElement>) {
+  src,
+  alt,
+}: {
+  className?: string;
+  src: string;
+  alt: string;
+}) {
   return (
-    <img
+    <Image
+      src={src}
+      alt={alt}
+      fill
+      sizes="32px"
       className={`aspect-square size-full object-cover ${className ?? ""}`}
-      {...props}
     />
   );
 }

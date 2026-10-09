@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 
 export default function Showcase() {
   const rootRef = useRef<HTMLElement>(null);

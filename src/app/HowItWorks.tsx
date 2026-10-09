@@ -8,18 +8,6 @@ import { Search, Users, Hammer, Award } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Palette sampled from public/hero 3.png
-const TL_CORAL = "#FD9779";
-const TL_MAGENTA = "#C74990";
-const TL_PURPLE = "#592AA8";
-const TL_GOLD = "#FED68B";
-const TL_GRADIENT_V =
-  "linear-gradient(180deg, #FD9779, #C74990, #592AA8)";
-const TL_GRADIENT_R =
-  "linear-gradient(90deg, #FD9779, #C74990, #592AA8)";
-const TL_DOT_FROM = "from-[#FD9779]";
-const TL_DOT_TO = "to-[#592AA8]";
-
 const STEPS = [
   {
     title: "Discover",
@@ -396,8 +384,6 @@ export default function HowItWorks() {
     useState<Record<PlacementKey, Placement>>(DEFAULT_PLACEMENTS);
   const [selected, setSelected] = useState<PlacementKey>("discover");
   const [copied, setCopied] = useState(false);
-  const placementsRef = useRef(placements);
-  placementsRef.current = placements;
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -434,7 +420,7 @@ export default function HowItWorks() {
     const rect = bounds.getBoundingClientRect();
     const startX = e.clientX;
     const startY = e.clientY;
-    const orig = { ...placementsRef.current[key] };
+    const orig = { ...placements[key] };
 
     const move = (ev: PointerEvent) => {
       const dx = ((ev.clientX - startX) / rect.width) * 100;
@@ -454,7 +440,7 @@ export default function HowItWorks() {
     };
     window.addEventListener("pointermove", move);
     window.addEventListener("pointerup", up);
-  }, []);
+  }, [placements]);
 
   const onResize = useCallback((key: PlacementKey, e: React.PointerEvent) => {
     const isCharacter = (CHARACTER_KEYS as string[]).includes(key);
@@ -467,7 +453,7 @@ export default function HowItWorks() {
     if (!bounds) return;
     const rect = bounds.getBoundingClientRect();
     const startX = e.clientX;
-    const origW = placementsRef.current[key].w;
+    const origW = placements[key].w;
 
     const move = (ev: PointerEvent) => {
       const dw = ((ev.clientX - startX) / rect.width) * 100;
@@ -482,7 +468,7 @@ export default function HowItWorks() {
     };
     window.addEventListener("pointermove", move);
     window.addEventListener("pointerup", up);
-  }, []);
+  }, [placements]);
 
   const copyJson = async () => {
     try {
@@ -510,6 +496,8 @@ export default function HowItWorks() {
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
+
+    const cleanupFns: Array<() => void> = [];
 
     const ctx = gsap.context(() => {
       setHowWipe(0);
@@ -837,9 +825,26 @@ export default function HowItWorks() {
           gsap.set(".timeline-flood-progress", { opacity: 1 });
         },
       });
+
+      // Keep viewport-dependent pixel math fresh when the window is
+      // resized or the browser toggles fullscreen.
+      let resizeRaf = 0;
+      const onResize = () => {
+        cancelAnimationFrame(resizeRaf);
+        resizeRaf = requestAnimationFrame(() => {
+          applyContinuum();
+          ScrollTrigger.update();
+        });
+      };
+      window.addEventListener("resize", onResize);
+      cleanupFns.push(() => {
+        window.removeEventListener("resize", onResize);
+        cancelAnimationFrame(resizeRaf);
+      });
     }, root);
 
     return () => {
+      cleanupFns.forEach((fn) => fn());
       ctx.revert();
     };
   }, [editMode]);
