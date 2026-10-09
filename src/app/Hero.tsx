@@ -151,7 +151,11 @@ export default function Hero() {
       className="relative h-[100svh] w-full overflow-hidden"
     >
       <div
+<<<<<<< HEAD
 className="absolute inset-0 z-[3] translate-x-[75px] translate-y-[20px] 2xl:translate-x-[31px] 2xl:translate-y-[27px]"
+=======
+        className="absolute inset-0 z-[3] translate-x-[75px] translate-y-[20px] 2xl:translate-x-[30px] 2xl:translate-y-[27px]"
+>>>>>>> backend
       >
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="hero-globe-inner relative aspect-square w-full max-w-none opacity-0">
@@ -168,7 +172,7 @@ className="absolute inset-0 z-[3] translate-x-[75px] translate-y-[20px] 2xl:tran
       </div>
 
       <div
-        className="pointer-events-none absolute inset-0 z-[1] translate-x-[21.51vw] scale-[0.74] xl:max-2xl:translate-x-[calc(21.51vw_+_80px)]"
+        className="pointer-events-none absolute inset-0 z-[1] translate-x-[21.51vw] scale-[0.74] xl:max-2xl:translate-x-[calc(21.51vw_+_80px)] 2xl:translate-x-[calc(21.51vw_+_40px)]"
       >
         <div className="orbit-system absolute inset-0 flex items-center justify-center">
           <div
@@ -263,7 +267,11 @@ className="absolute inset-0 z-[3] translate-x-[75px] translate-y-[20px] 2xl:tran
       </div>
 
       <div
+<<<<<<< HEAD
 className="absolute inset-0 z-10 flex flex-col items-start justify-end px-[clamp(1.5rem,4.17vw,5rem)] pb-[clamp(3rem,8.9vh,6rem)] text-left xl:max-2xl:justify-center xl:max-2xl:pb-0 2xl:-translate-y-24"
+=======
+        className="absolute inset-0 z-10 flex flex-col items-start justify-end px-[clamp(1.5rem,4.17vw,5rem)] pb-[clamp(3rem,8.9vh,6rem)] text-left xl:max-2xl:justify-center xl:max-2xl:pb-0 2xl:-translate-y-24"
+>>>>>>> backend
       >
         <p className="hero-eyebrow mb-[clamp(0.5rem,0.83vw,1rem)] text-xs font-medium uppercase tracking-[0.25em] text-white/60 opacity-0">
           students   ·   projects   ·   experience
@@ -295,7 +303,7 @@ className="absolute inset-0 z-10 flex flex-col items-start justify-end px-[clamp
         </p>
         <div className="hero-cta mt-[clamp(1.25rem,1.67vw,2rem)] flex flex-col gap-4 opacity-0 sm:flex-row">
           <Link
-            href="/coming-soon"
+            href="/auth"
             className="rounded-full bg-white px-8 py-3 text-sm font-semibold text-black transition-transform hover:scale-105"
           >
             Get Started
@@ -341,7 +349,7 @@ className="absolute inset-0 z-10 flex flex-col items-start justify-end px-[clamp
             Contact
           </a>
         </nav>
-        <Link href="/coming-soon" className="nav-cta group relative opacity-0">
+        <Link href="/auth" className="nav-cta group relative opacity-0">
           <span className="nav-cta-pill block rounded-full bg-white px-5 py-2 text-sm font-semibold text-black transition-all duration-200 group-hover:scale-105">
             Get Started
           </span>
