@@ -19,7 +19,7 @@ export default function ComingSoon() {
     >
       <Link
         href="/"
-        className="absolute left-[clamp(1.25rem,1.67vw,2rem)] top-[clamp(0.75rem,1.2vw,1.75rem)] opacity-90 transition-opacity hover:opacity-100"
+        className="absolute left-[clamp(1.25rem,1.67vw,2rem)] top-[-24px] opacity-90 transition-opacity hover:opacity-100"
       >
         <Image
           src="/logo.png"
