@@ -295,7 +295,7 @@ export default function Hero() {
         </p>
         <div className="hero-cta mt-[clamp(1.25rem,1.67vw,2rem)] flex flex-col gap-4 opacity-0 sm:flex-row">
           <Link
-            href="/coming-soon"
+            href="/auth"
             className="rounded-full bg-white px-8 py-3 text-sm font-semibold text-black transition-transform hover:scale-105"
           >
             Get Started
@@ -341,7 +341,7 @@ export default function Hero() {
             Contact
           </a>
         </nav>
-        <Link href="/coming-soon" className="nav-cta group relative opacity-0">
+        <Link href="/auth" className="nav-cta group relative opacity-0">
           <span className="nav-cta-pill block rounded-full bg-white px-5 py-2 text-sm font-semibold text-black transition-all duration-200 group-hover:scale-105">
             Get Started
           </span>
