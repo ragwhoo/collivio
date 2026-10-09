@@ -263,7 +263,7 @@ export default function Hero() {
       </div>
 
       <div
-        className="absolute inset-0 z-10 flex flex-col items-start justify-end px-[clamp(1.5rem,4.17vw,5rem)] pb-[clamp(3rem,8.9vh,6rem)] text-left xl:max-2xl:justify-center xl:max-2xl:pb-0 2xl:text-center 2xl:justify-center 2xl:flex 2xl:flex-row"
+        className="absolute inset-0 z-10 flex flex-col items-start justify-end px-[clamp(1.5rem,4.17vw,5rem)] pb-[clamp(3rem,8.9vh,6rem)] text-left xl:max-2xl:justify-center xl:max-2xl:pb-0"
       >
         <p className="hero-eyebrow mb-[clamp(0.5rem,0.83vw,1rem)] text-xs font-medium uppercase tracking-[0.25em] text-white/60 opacity-0">
           students   ·   projects   ·   experience
@@ -272,11 +272,11 @@ export default function Hero() {
           className="hero-title font-semibold tracking-tight text-white"
           style={{ lineHeight: 1 }}
         >
-          <span className="hero-title-line block text-[clamp(3.5rem,min(calc(6.67vw_+_16px),calc(12.5vh_+_16px)),8rem)] opacity-0">
+          <span className="hero-title-line block text-[clamp(3rem,min(calc(6.67vw_+_16px),calc(12.5vh_+_16px)),8rem)] opacity-0">
             Tomorrow,
           </span>
           <span
-            className="hero-title-line block bg-clip-text text-transparent text-[clamp(3.5rem,min(calc(6.67vw_+_16px),calc(12.5vh_+_16px)),8rem)] opacity-0"
+            className="hero-title-line block bg-clip-text text-transparent text-[clamp(3rem,min(calc(6.67vw_+_16px),calc(12.5vh_+_16px)),8rem)] opacity-0"
             style={{
               backgroundImage:
                 "linear-gradient(135deg, #FF7F9B, #F89A9A, #D7A7FF)",
