@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { Hammer, Users, TrendingUp, Sprout } from "lucide-react";
@@ -293,9 +294,12 @@ export default function Hero() {
           time.
         </p>
         <div className="hero-cta mt-[clamp(1.25rem,1.67vw,2rem)] flex flex-col gap-4 opacity-0 sm:flex-row">
-          <button className="rounded-full bg-white px-8 py-3 text-sm font-semibold text-black transition-transform hover:scale-105">
+          <Link
+            href="/coming-soon"
+            className="rounded-full bg-white px-8 py-3 text-sm font-semibold text-black transition-transform hover:scale-105"
+          >
             Get Started
-          </button>
+          </Link>
           <button className="rounded-full border border-white/40 px-8 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/10">
             Learn More
           </button>
@@ -337,11 +341,11 @@ export default function Hero() {
             Contact
           </a>
         </nav>
-        <a href="#" className="nav-cta group relative opacity-0">
+        <Link href="/coming-soon" className="nav-cta group relative opacity-0">
           <span className="nav-cta-pill block rounded-full bg-white px-5 py-2 text-sm font-semibold text-black transition-all duration-200 group-hover:scale-105">
             Get Started
           </span>
-        </a>
+        </Link>
       </header>
     </div>
     </>
