@@ -151,7 +151,7 @@ export default function Hero() {
       className="relative h-[100svh] w-full overflow-hidden"
     >
       <div
-        className="absolute inset-0 z-[3] translate-x-[75px] translate-y-[20px] 2xl:translate-x-[45px]"
+        className="absolute inset-0 z-[3] translate-x-[75px] translate-y-[20px]"
       >
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="hero-globe-inner relative aspect-square w-full max-w-none opacity-0">
