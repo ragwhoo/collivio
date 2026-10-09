@@ -4,11 +4,11 @@ import auth from "@/lib/auth";
 
 export default function AuthLoginPage() {
   const handleStudentLogin = () => {
-    window.location.href = "/api/auth/[...nextauth]?type=student";
+    window.location.href = "/auth/signup?type=student";
   };
 
   const handleBusinessLogin = () => {
-    window.location.href = "/api/auth/[...nextauth]?type=business";
+    window.location.href = "/auth/signup?type=business";
   };
 
   return (

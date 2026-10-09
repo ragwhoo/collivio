@@ -6,7 +6,9 @@ import { createNeonAuth } from "@neondatabase/auth/next/server";
 const auth = createNeonAuth({
   baseUrl: process.env.NEON_AUTH_BASE_URL || "http://localhost:3000",
   cookies: {
-    secret: process.env.NEON_AUTH_COOKIE_SECRET || "your-minimum-32-char-secret-key",
+    secret:
+      process.env.NEON_AUTH_COOKIE_SECRET ||
+      "collivio-dev-secret-key-change-me-0123456789",
     // Optional: TTL for session cache in seconds (default: 300)
     // sessionDataTtl: 300,
   },
