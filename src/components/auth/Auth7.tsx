@@ -234,17 +234,6 @@ export default function Auth7({ type }: { type?: AccountType }) {
             sizes="(min-width: 1024px) 50vw, 0px"
             className="object-cover"
           />
-          {/* Brand logo overlay — white script over the dark sky */}
-          <div className="absolute inset-x-0 top-5 flex justify-center md:top-7">
-            <Image
-              src="/loooogo.png"
-              alt="Collivio logo"
-              width={384}
-              height={384}
-              priority
-              className="h-auto w-40 xl:w-48"
-            />
-          </div>
         </div>
       </div>
     </div>
