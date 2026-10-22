@@ -1,5 +1,14 @@
 import { z } from "zod";
 
+function isHttpUrl(value: string): boolean {
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
 export const emailSchema = z.string().trim().toLowerCase().email("Enter a valid email");
 
 export const signUpSchema = z.object({
@@ -23,9 +32,9 @@ export const profileSchema = z.object({
   graduationYear: z.coerce.number().int().min(1950).max(2100).optional(),
   skills: z.string().max(600).optional(),
   interests: z.string().max(600).optional(),
-  githubUrl: z.string().trim().url().optional().or(z.literal("")),
-  linkedinUrl: z.string().trim().url().optional().or(z.literal("")),
-  portfolioUrl: z.string().trim().url().optional().or(z.literal("")),
+  githubUrl: z.string().trim().refine((v) => v === "" || isHttpUrl(v), "Enter a valid http(s) URL").optional().or(z.literal("")),
+  linkedinUrl: z.string().trim().refine((v) => v === "" || isHttpUrl(v), "Enter a valid http(s) URL").optional().or(z.literal("")),
+  portfolioUrl: z.string().trim().refine((v) => v === "" || isHttpUrl(v), "Enter a valid http(s) URL").optional().or(z.literal("")),
   visibility: z.enum(["public", "restricted"]).default("public"),
 });
 
@@ -56,8 +65,8 @@ export const opportunitySchema = z.object({
 export const applicationSchema = z.object({
   opportunityId: z.string().uuid(),
   coverLetter: z.string().trim().max(4000).optional(),
-  resumeUrl: z.string().trim().url().optional().or(z.literal("")),
-  portfolioUrl: z.string().trim().url().optional().or(z.literal("")),
+  resumeUrl: z.string().trim().refine((v) => v === "" || isHttpUrl(v), "Enter a valid http(s) URL").optional().or(z.literal("")),
+  portfolioUrl: z.string().trim().refine((v) => v === "" || isHttpUrl(v), "Enter a valid http(s) URL").optional().or(z.literal("")),
 });
 
 export const projectSchema = z.object({
@@ -68,17 +77,17 @@ export const projectSchema = z.object({
   category: z.string().trim().min(2).max(60),
   techStack: z.string().max(600).optional(),
   skillsRequired: z.string().max(600).optional(),
-  coverImageUrl: z.string().trim().url().optional().or(z.literal("")),
-  githubUrl: z.string().trim().url().optional().or(z.literal("")),
-  demoUrl: z.string().trim().url().optional().or(z.literal("")),
-  paperUrl: z.string().trim().url().optional().or(z.literal("")),
+  coverImageUrl: z.string().trim().refine((v) => v === "" || isHttpUrl(v), "Enter a valid http(s) URL").optional().or(z.literal("")),
+  githubUrl: z.string().trim().refine((v) => v === "" || isHttpUrl(v), "Enter a valid http(s) URL").optional().or(z.literal("")),
+  demoUrl: z.string().trim().refine((v) => v === "" || isHttpUrl(v), "Enter a valid http(s) URL").optional().or(z.literal("")),
+  paperUrl: z.string().trim().refine((v) => v === "" || isHttpUrl(v), "Enter a valid http(s) URL").optional().or(z.literal("")),
   visibility: z.enum(["public", "unlisted", "private"]).default("public"),
   collaborationOpen: z.coerce.boolean().optional(),
   publish: z.coerce.boolean().optional(),
 });
 
 export const mediaPostSchema = z.object({
-  imageUrl: z.string().trim().url("Provide a valid image URL"),
+  imageUrl: z.string().trim().refine(isHttpUrl, "Provide a valid image URL"),
   caption: z.string().trim().max(240).optional(),
   description: z.string().trim().max(2000).optional(),
   album: z.string().trim().max(120).optional(),
@@ -112,7 +121,7 @@ export const eventSchema = z.object({
   endsAt: z.string().optional(),
   timezone: z.string().trim().default("UTC"),
   location: z.string().trim().max(200).optional(),
-  onlineUrl: z.string().trim().url().optional().or(z.literal("")),
+  onlineUrl: z.string().trim().refine((v) => v === "" || isHttpUrl(v), "Enter a valid http(s) URL").optional().or(z.literal("")),
   registrationDeadline: z.string().optional(),
   capacity: z.coerce.number().int().min(1).optional(),
   eligibility: z.string().trim().max(2000).optional(),
@@ -124,15 +133,15 @@ export const resourceSchema = z.object({
   category: z.string().trim().min(2).max(60),
   subject: z.string().trim().max(120).optional(),
   college: z.string().trim().max(160).optional(),
-  url: z.string().trim().url().optional().or(z.literal("")),
-  fileUrl: z.string().trim().url().optional().or(z.literal("")),
+  url: z.string().trim().refine((v) => v === "" || isHttpUrl(v), "Enter a valid http(s) URL").optional().or(z.literal("")),
+  fileUrl: z.string().trim().refine((v) => v === "" || isHttpUrl(v), "Enter a valid http(s) URL").optional().or(z.literal("")),
   tags: z.string().max(600).optional(),
 });
 
 export const organizationSchema = z.object({
   name: z.string().trim().min(2).max(160),
-  website: z.string().trim().url().optional().or(z.literal("")),
-  logoUrl: z.string().trim().url().optional().or(z.literal("")),
+  website: z.string().trim().refine((v) => v === "" || isHttpUrl(v), "Enter a valid http(s) URL").optional().or(z.literal("")),
+  logoUrl: z.string().trim().refine((v) => v === "" || isHttpUrl(v), "Enter a valid http(s) URL").optional().or(z.literal("")),
   description: z.string().trim().max(4000).optional(),
 });
 
