@@ -1,3 +1,5 @@
+"use client";
+
 import { BUTTON_BASE, Button } from '@/components/base-ui/button';
 import type { ReactNode } from 'react';
 import { House } from 'lucide-react';
