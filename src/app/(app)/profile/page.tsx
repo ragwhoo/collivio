@@ -73,11 +73,19 @@ export default async function ProfilePage() {
             </label>
             <label className="flex flex-col gap-1 text-sm">
               <span className="font-medium">Skills (comma separated)</span>
-              <input name="skills" defaultValue={profile.skills.join(", ")} className={input} />
+              <input
+                name="skills"
+                defaultValue={(profile.skills ?? []).join(", ")}
+                className={input}
+              />
             </label>
             <label className="flex flex-col gap-1 text-sm">
               <span className="font-medium">Interests (comma separated)</span>
-              <input name="interests" defaultValue={profile.interests.join(", ")} className={input} />
+              <input
+                name="interests"
+                defaultValue={(profile.interests ?? []).join(", ")}
+                className={input}
+              />
             </label>
             <label className="flex flex-col gap-1 text-sm">
               <span className="font-medium">GitHub URL</span>

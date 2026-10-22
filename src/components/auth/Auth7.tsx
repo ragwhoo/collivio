@@ -2,7 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useActionState } from "react";
 import { motion, type Variants } from "motion/react";
+import { signInAction, signUpAction, type AuthState } from "@/app/actions";
 
 // Simple Google SVG Icon
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -28,9 +30,29 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 type AccountType = "student" | "business";
 
-export default function Auth7({ type }: { type?: AccountType }) {
+export default function Auth7({
+  type,
+  mode = "signup",
+}: {
+  type?: AccountType;
+  mode?: "signin" | "signup";
+}) {
   const typeLabel =
     type === "student" ? "Student" : type === "business" ? "Business" : null;
+
+  const [signInState, signInFormAction, signInPending] = useActionState(
+    signInAction,
+    undefined,
+  );
+  const [signUpState, signUpFormAction, signUpPending] = useActionState(
+    signUpAction,
+    undefined,
+  );
+
+  const isSignIn = mode === "signin";
+  const state: AuthState = isSignIn ? signInState : signUpState;
+  const pending = isSignIn ? signInPending : signUpPending;
+  const action = isSignIn ? signInFormAction : signUpFormAction;
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -88,12 +110,30 @@ export default function Auth7({ type }: { type?: AccountType }) {
             {/* Titles */}
             <motion.div variants={itemVariants} className="mb-4 text-center sm:mb-6 [@media(max-height:820px)]:mb-3">
               <h1 className="mb-1 text-2xl font-semibold tracking-tight text-black sm:text-3xl md:text-4xl [@media(max-height:820px)]:text-2xl">
-                {typeLabel ? `Create your ${typeLabel} Account` : "Create your Account"}
+                {isSignIn
+                  ? "Welcome back"
+                  : typeLabel
+                    ? `Create your ${typeLabel} Account`
+                    : "Create your Account"}
               </h1>
               <p className="text-sm text-black">
-                Let&apos;s get started with your 30 days free trial
+                {isSignIn
+                  ? "Sign in to continue to your Collivio dashboard."
+                  : "Let's get started with your 30 days free trial"}
               </p>
             </motion.div>
+
+            {/* Error */}
+            {state?.error ? (
+              <motion.div variants={itemVariants} className="mb-3">
+                <p
+                  className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600"
+                  role="alert"
+                >
+                  {state.error}
+                </p>
+              </motion.div>
+            ) : null}
 
             {/* Google Login Button */}
             <motion.div variants={itemVariants} className="mb-3 sm:mb-4 [@media(max-height:820px)]:mb-2">
@@ -117,36 +157,26 @@ export default function Auth7({ type }: { type?: AccountType }) {
             </motion.div>
 
             {/* Form */}
-            <form className="flex flex-col gap-3 sm:gap-4 [@media(max-height:820px)]:gap-2">
-              <input type="hidden" name="accountType" value={type ?? ""} />
+            <form action={action} className="flex flex-col gap-3 sm:gap-4 [@media(max-height:820px)]:gap-2">
+              {!isSignIn ? <input type="hidden" name="accountType" value={type ?? "student"} /> : null}
 
-              <motion.div
-                variants={itemVariants}
-                className="flex flex-col gap-2"
-              >
-                <label
-                  htmlFor="name"
-                  className="text-sm font-medium text-black"
-                >
-                  Name
-                </label>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  placeholder="Enter your name"
-                  className="w-full rounded-full border border-neutral-200 bg-white px-5 py-2.5 text-sm text-black placeholder:text-neutral-300 focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900 sm:py-3"
-                />
-              </motion.div>
+              {!isSignIn ? (
+                <motion.div variants={itemVariants} className="flex flex-col gap-2">
+                  <label htmlFor="name" className="text-sm font-medium text-black">
+                    Name
+                  </label>
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    placeholder="Enter your name"
+                    className="w-full rounded-full border border-neutral-200 bg-white px-5 py-2.5 text-sm text-black placeholder:text-neutral-300 focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900 sm:py-3"
+                  />
+                </motion.div>
+              ) : null}
 
-              <motion.div
-                variants={itemVariants}
-                className="flex flex-col gap-2"
-              >
-                <label
-                  htmlFor="email"
-                  className="text-sm font-medium text-black"
-                >
+              <motion.div variants={itemVariants} className="flex flex-col gap-2">
+                <label htmlFor="email" className="text-sm font-medium text-black">
                   Email
                 </label>
                 <input
@@ -158,14 +188,8 @@ export default function Auth7({ type }: { type?: AccountType }) {
                 />
               </motion.div>
 
-              <motion.div
-                variants={itemVariants}
-                className="flex flex-col gap-2"
-              >
-                <label
-                  htmlFor="password"
-                  className="text-sm font-medium text-black"
-                >
+              <motion.div variants={itemVariants} className="flex flex-col gap-2">
+                <label htmlFor="password" className="text-sm font-medium text-black">
                   Password
                 </label>
                 <input
@@ -178,30 +202,36 @@ export default function Auth7({ type }: { type?: AccountType }) {
               </motion.div>
 
               {/* Checkbox */}
-              <motion.div
-                variants={itemVariants}
-                className="flex items-start gap-3"
-              >
-                <div className="flex h-5 items-center">
-                  <input
-                    id="terms"
-                    name="terms"
-                    type="checkbox"
-                    className="h-4 w-4 rounded border-neutral-300 text-black focus:ring-neutral-900"
-                  />
-                </div>
-                <label htmlFor="terms" className="text-sm text-black">
-                  I agree to all Terms, Privacy Policy and Fees
-                </label>
-              </motion.div>
+              {!isSignIn ? (
+                <motion.div variants={itemVariants} className="flex items-start gap-3">
+                  <div className="flex h-5 items-center">
+                    <input
+                      id="terms"
+                      name="terms"
+                      type="checkbox"
+                      className="h-4 w-4 rounded border-neutral-300 text-black focus:ring-neutral-900"
+                    />
+                  </div>
+                  <label htmlFor="terms" className="text-sm text-black">
+                    I agree to all Terms, Privacy Policy and Fees
+                  </label>
+                </motion.div>
+              ) : null}
 
-              {/* Sign Up Button */}
+              {/* Submit Button */}
               <motion.div variants={itemVariants} className="mt-1">
                 <button
                   type="submit"
-                  className="w-full rounded-full bg-black px-6 py-3.5 text-sm font-medium text-white shadow-sm transition-all hover:opacity-90 active:scale-[0.98]"
+                  disabled={pending}
+                  className="w-full rounded-full bg-black px-6 py-3.5 text-sm font-medium text-white shadow-sm transition-all hover:opacity-90 active:scale-[0.98] disabled:opacity-60"
                 >
-                  Sign Up
+                  {pending
+                    ? isSignIn
+                      ? "Signing in…"
+                      : "Creating account…"
+                    : isSignIn
+                      ? "Sign in"
+                      : "Sign Up"}
                 </button>
               </motion.div>
             </form>
@@ -211,13 +241,24 @@ export default function Auth7({ type }: { type?: AccountType }) {
               variants={itemVariants}
               className="mt-4 text-sm text-black sm:mt-5 [@media(max-height:820px)]:mt-2"
             >
-              Already have an account?{" "}
-              <a
-                href="/auth"
-                className="font-semibold text-black hover:underline"
-              >
-                Log in
-              </a>
+              {isSignIn ? (
+                <>
+                  New to Collivio?{" "}
+                  <Link
+                    href="/auth/signup"
+                    className="font-semibold text-black hover:underline"
+                  >
+                    Create an account
+                  </Link>
+                </>
+              ) : (
+                <>
+                  Already have an account?{" "}
+                  <a href="/auth" className="font-semibold text-black hover:underline">
+                    Log in
+                  </a>
+                </>
+              )}
             </motion.div>
           </motion.div>
         </div>

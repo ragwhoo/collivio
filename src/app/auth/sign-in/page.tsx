@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { SignInForm } from "@/components/auth/auth-forms";
+import Auth7 from "@/components/auth/Auth7";
 
 export const metadata: Metadata = {
   title: "Sign in — Collivio",
 };
 
 export default function SignInPage() {
-  return <SignInForm />;
+  return <Auth7 mode="signin" />;
 }

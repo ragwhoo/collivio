@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import { SignUpForm } from "@/components/auth/auth-forms";
+import Auth7 from "@/components/auth/Auth7";
 
 export const metadata: Metadata = {
-  title: "Create account — Collivio",
+  title: "Sign Up — Collivio",
+  description: "Create your Collivio account and start collaborating.",
 };
 
 export default async function SignUpPage({
@@ -13,5 +14,5 @@ export default async function SignUpPage({
   const { type } = await searchParams;
   const accountType = type === "business" ? "business" : "student";
 
-  return <SignUpForm accountType={accountType} />;
+  return <Auth7 type={accountType} mode="signup" />;
 }

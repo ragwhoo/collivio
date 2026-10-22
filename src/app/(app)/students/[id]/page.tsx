@@ -13,6 +13,7 @@ import { requireProfile } from "@/lib/auth/session";
 import { followStudentAction, startConversationAction } from "@/app/actions";
 import { Card, PageHeader, Tag, formatDate } from "@/components/app/ui";
 import { Button } from "@/components/ui/button";
+import { isUuid } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -22,6 +23,8 @@ export default async function StudentProfilePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  if (!isUuid(id)) notFound();
+
   const viewer = await requireProfile();
 
   const [student] = await db.select().from(profiles).where(eq(profiles.id, id)).limit(1);
