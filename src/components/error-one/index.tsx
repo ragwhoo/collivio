@@ -18,6 +18,8 @@ export interface ErrorOneProps {
   description?: string;
   /** Primary call-to-action */
   action?: ErrorOneAction;
+  /** Optional secondary call-to-action shown below the primary button */
+  secondaryAction?: ErrorOneAction;
 }
 
 // ─── Sub-components ─────────────────────────────────────────────────────────
@@ -71,11 +73,33 @@ function PillButton({ label, icon, href, onClick }: ErrorOneAction) {
   );
 }
 
+function SecondaryAction({ label, icon, href, onClick }: ErrorOneAction) {
+  const cls =
+    'text-muted-foreground hover:text-foreground mt-1 inline-flex items-center justify-center gap-1 text-sm underline-offset-4 hover:underline';
+
+  if (href) {
+    return (
+      <a href={href} className={cls}>
+        {label}
+        {icon}
+      </a>
+    );
+  }
+
+  return (
+    <button type="button" onClick={onClick} className={cls}>
+      {label}
+      {icon}
+    </button>
+  );
+}
+
 export function ErrorOne({
   code = '404',
   title = "No, no, that's right.",
   description = 'This is a 404 page. And this page exists, no matter what anyone says.',
   action = defaultErrorOneAction,
+  secondaryAction,
 }: ErrorOneProps) {
   return (
     <main className="theme-injected bg-background text-foreground relative flex min-h-screen items-center justify-center px-6 py-16">
@@ -110,6 +134,7 @@ export function ErrorOne({
           </p>
         </div>
         <PillButton {...action} />
+        {secondaryAction ? <SecondaryAction {...secondaryAction} /> : null}
       </section>
     </main>
   );
