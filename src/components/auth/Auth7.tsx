@@ -2,9 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { motion, type Variants } from "motion/react";
 import { signInAction, signUpAction, type AuthState } from "@/app/actions";
+import { getAuthClient } from "@/lib/auth-client";
 
 // Simple Google SVG Icon
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -53,6 +54,20 @@ export default function Auth7({
   const state: AuthState = isSignIn ? signInState : signUpState;
   const pending = isSignIn ? signInPending : signUpPending;
   const action = isSignIn ? signInFormAction : signUpFormAction;
+
+  const [googlePending, setGooglePending] = useState(false);
+  const handleGoogleSignIn = async () => {
+    setGooglePending(true);
+    try {
+      const authClient = getAuthClient();
+      await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/dashboard",
+      });
+    } catch {
+      setGooglePending(false);
+    }
+  };
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -139,10 +154,12 @@ export default function Auth7({
             <motion.div variants={itemVariants} className="mb-3 sm:mb-4 [@media(max-height:820px)]:mb-2">
               <button
                 type="button"
-                className="flex w-full items-center justify-center gap-3 rounded-full border border-neutral-200 bg-white px-6 py-3 text-sm font-medium text-black transition-colors hover:bg-neutral-50 active:bg-neutral-100"
+                onClick={handleGoogleSignIn}
+                disabled={googlePending}
+                className="flex w-full items-center justify-center gap-3 rounded-full border border-neutral-200 bg-white px-6 py-3 text-sm font-medium text-black transition-colors hover:bg-neutral-50 active:bg-neutral-100 disabled:opacity-60"
               >
                 <GoogleIcon className="text-lg" />
-                Login with Google
+                {googlePending ? "Redirecting…" : "Login with Google"}
               </button>
             </motion.div>
 
