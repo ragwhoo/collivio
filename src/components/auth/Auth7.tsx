@@ -60,10 +60,12 @@ export default function Auth7({
     setGooglePending(true);
     try {
       const authClient = getAuthClient();
-      await authClient.signIn.social({
+      const result = await authClient.signIn.social({
         provider: "google",
-        callbackURL: "/dashboard",
+        callbackURL: `${window.location.origin}/dashboard`,
       });
+      console.log("google sign-in result", result);
+      if (result?.data?.url) window.location.href = result.data.url;
     } catch {
       setGooglePending(false);
     }
