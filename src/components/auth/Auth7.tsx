@@ -2,10 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useActionState, useState } from "react";
+import { useActionState } from "react";
 import { motion, type Variants } from "motion/react";
-import { signInAction, signUpAction, type AuthState } from "@/app/actions";
-import { getAuthClient } from "@/lib/auth-client";
+import { signInAction, signInWithGoogleAction, signUpAction, type AuthState } from "@/app/actions";
 
 // Simple Google SVG Icon
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -55,21 +54,7 @@ export default function Auth7({
   const pending = isSignIn ? signInPending : signUpPending;
   const action = isSignIn ? signInFormAction : signUpFormAction;
 
-  const [googlePending, setGooglePending] = useState(false);
-  const handleGoogleSignIn = async () => {
-    setGooglePending(true);
-    try {
-      const authClient = getAuthClient();
-      const result = await authClient.signIn.social({
-        provider: "google",
-        callbackURL: `${window.location.origin}/dashboard`,
-      });
-      console.log("google sign-in result", result);
-      if (result?.data?.url) window.location.href = result.data.url;
-    } catch {
-      setGooglePending(false);
-    }
-  };
+  // Google sign-in is handled by a server action (see signInWithGoogleAction).
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -154,15 +139,15 @@ export default function Auth7({
 
             {/* Google Login Button */}
             <motion.div variants={itemVariants} className="mb-3 sm:mb-4 [@media(max-height:820px)]:mb-2">
-              <button
-                type="button"
-                onClick={handleGoogleSignIn}
-                disabled={googlePending}
-                className="flex w-full items-center justify-center gap-3 rounded-full border border-neutral-200 bg-white px-6 py-3 text-sm font-medium text-black transition-colors hover:bg-neutral-50 active:bg-neutral-100 disabled:opacity-60"
-              >
-                <GoogleIcon className="text-lg" />
-                {googlePending ? "Redirecting…" : "Login with Google"}
-              </button>
+              <form action={signInWithGoogleAction}>
+                <button
+                  type="submit"
+                  className="flex w-full items-center justify-center gap-3 rounded-full border border-neutral-200 bg-white px-6 py-3 text-sm font-medium text-black transition-colors hover:bg-neutral-50 active:bg-neutral-100"
+                >
+                  <GoogleIcon className="text-lg" />
+                  Login with Google
+                </button>
+              </form>
             </motion.div>
 
             {/* Divider */}

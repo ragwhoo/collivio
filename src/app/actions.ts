@@ -1,5 +1,6 @@
 "use server";
 
+import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { and, count, eq, inArray, sql } from "drizzle-orm";
@@ -146,6 +147,16 @@ export async function signUpAction(
   }
 
   redirect("/dashboard");
+}
+
+export async function signInWithGoogleAction() {
+  const result = await auth.signIn.social({
+    provider: "google",
+    callbackURL: "/dashboard",
+  });
+  const url = (result as { data?: { url?: string } })?.data?.url;
+  if (url) redirect(url);
+  redirect("/auth/sign-in");
 }
 
 export async function signInAction(
