@@ -71,7 +71,11 @@ Authenticated (`(app)` layout, guarded by `requireProfile()`):
 | `/messages`, `/messages/[id]` | Direct messages |
 | `/profile`, `/settings` | Account settings |
 | `/business` | Business portal (business/admin roles) |
-| `/admin` | Admin and Trust Center (admin role) |
+| `/admin` | Admin dashboard: queues, KPIs, recent activity (admin role) |
+| `/admin/organizations` | Business verification queue and decisions |
+| `/admin/reports` | Report moderation queue and resolution history |
+| `/admin/users` | Member search, filters and suspension controls |
+| `/admin/content` | Read-only content pulse across modules |
 
 ## Architecture
 

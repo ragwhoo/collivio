@@ -120,6 +120,10 @@ const statusStyles: Record<string, string> = {
   pending: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
   approved: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
   archived: "bg-neutral-500/10 text-neutral-500",
+  open: "bg-red-500/10 text-red-600 dark:text-red-400",
+  suspended: "bg-red-500/10 text-red-600 dark:text-red-400",
+  resolved: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+  dismissed: "bg-neutral-500/10 text-neutral-500",
 };
 
 export function StatusBadge({ status }: { status: string }) {

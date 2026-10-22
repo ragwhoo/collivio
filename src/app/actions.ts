@@ -1432,6 +1432,7 @@ export async function resolveReportAction(
   });
 
   await audit(profile.id, `report.${decision}`, "report", reportId);
+  revalidatePath("/admin");
   revalidatePath("/admin/reports");
 }
 
@@ -1479,6 +1480,7 @@ export async function verifyBusinessAction(
 
   await audit(profile.id, `organization.${decision}`, "organization", organizationId);
   revalidatePath("/admin");
+  revalidatePath("/admin/organizations");
   revalidatePath("/business");
 }
 
@@ -1493,6 +1495,7 @@ export async function suspendUserAction(userId: string, suspend: boolean) {
     .where(eq(profiles.id, userId));
 
   await audit(profile.id, suspend ? "user.suspend" : "user.restore", "user", userId);
+  revalidatePath("/admin");
   revalidatePath("/admin/users");
 }
 
