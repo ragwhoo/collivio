@@ -23,11 +23,21 @@ export default async function NewProjectPage() {
         <form action={createProjectAction} className="flex flex-col gap-4">
           <label className="flex flex-col gap-1 text-sm">
             <span className="font-medium">Title</span>
-            <input name="title" required className={input} />
+            <input name="title" required minLength={3} maxLength={160} className={input} />
           </label>
           <label className="flex flex-col gap-1 text-sm">
             <span className="font-medium">Description</span>
-            <textarea name="description" required rows={5} className={textarea} />
+            <textarea
+              name="description"
+              required
+              minLength={20}
+              maxLength={8000}
+              rows={5}
+              className={textarea}
+            />
+            <span className="text-muted-foreground text-xs">
+              At least 20 characters.
+            </span>
           </label>
           <label className="flex flex-col gap-1 text-sm">
             <span className="font-medium">Abstract</span>
@@ -41,7 +51,14 @@ export default async function NewProjectPage() {
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="flex flex-col gap-1 text-sm">
               <span className="font-medium">Category</span>
-              <input name="category" defaultValue="software" className={input} />
+              <input
+                name="category"
+                defaultValue="software"
+                required
+                minLength={2}
+                maxLength={60}
+                className={input}
+              />
             </label>
             <label className="flex flex-col gap-1 text-sm">
               <span className="font-medium">Visibility</span>

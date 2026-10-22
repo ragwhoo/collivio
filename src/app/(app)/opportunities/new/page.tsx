@@ -55,7 +55,7 @@ export default async function NewOpportunityPage() {
         <form action={createOpportunityAction} className="flex flex-col gap-4">
           <label className="flex flex-col gap-1 text-sm">
             <span className="font-medium">Title</span>
-            <input name="title" required className={input} />
+            <input name="title" required minLength={3} maxLength={160} className={input} />
           </label>
 
           <div className="grid gap-4 sm:grid-cols-2">
@@ -83,7 +83,15 @@ export default async function NewOpportunityPage() {
 
           <label className="flex flex-col gap-1 text-sm">
             <span className="font-medium">Description</span>
-            <textarea name="description" required rows={6} className={textarea} />
+            <textarea
+              name="description"
+              required
+              minLength={20}
+              maxLength={8000}
+              rows={6}
+              className={textarea}
+            />
+            <span className="text-muted-foreground text-xs">At least 20 characters.</span>
           </label>
 
           <label className="flex flex-col gap-1 text-sm">
